@@ -15,7 +15,8 @@ class UserController extends Controller
 
     public function data()
     {
-        $user = User::isNotAdmin()->orderBy('id', 'desc')->get();
+        // $user = User::isNotAdmin()->orderBy('id', 'desc')->get();
+        $user = User::orderBy('id', 'desc')->get();
 
         return datatables()
             ->of($user)
@@ -50,15 +51,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->level = 2;
+        $user->level = $request->level;
         $user->foto = '/img/user.jpg';
+        // dd($user);
         $user->save();
 
-        return response()->json('Data berhasil disimpan', 200);
+        return response()->json('Data berhasil disimpan', 200)->with('success', 'User Berhasil Ditambahkan');
     }
 
     /**

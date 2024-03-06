@@ -101,6 +101,12 @@
                             <input type="hidden" name="bayar" id="bayar">
 
                             <div class="form-group row">
+                                <label class="col-lg-2 control-label">Tanggal Pembelian</label>
+                                <div class="col-lg-8">
+                                    <input type="date" class="form-control" id="created_at" name="created_at">
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="totalrp" class="col-lg-2 control-label">Total</label>
                                 <div class="col-lg-8">
                                     <input type="text" id="totalrp" class="form-control" readonly>
@@ -259,6 +265,7 @@
             .done(response => {
                 $('#totalrp').val('Rp. '+ response.totalrp);
                 $('#bayarrp').val('Rp. '+ response.bayarrp);
+                $('#bayar').val(response.bayar);
                 $('#bayar').val(response.bayar);
                 $('.tampil-bayar').text('Rp. '+ response.bayarrp);
                 $('.tampil-terbilang').text(response.terbilang);

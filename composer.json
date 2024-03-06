@@ -21,6 +21,7 @@
         "laravel/ui": "*",
         "livewire/livewire": "^2.0",
         "milon/barcode": "^8.0",
+        "realrashid/sweet-alert": "^7.1",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

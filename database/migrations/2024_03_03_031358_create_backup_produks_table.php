@@ -23,6 +23,7 @@ class CreateBackupProduksTable extends Migration
             $table->integer('stok_akhir');
             $table->integer('stok_belanja');
             $table->integer('total_belanja');
+            $table->date('tanggal_expire')->nullable();
             $table->timestamps();
         });
     }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Produk;
 use App\Models\Kategori;
+use App\Models\BackupProduk;
 use Illuminate\Http\Request;
 use App\Models\PembelianDetail;
 use App\Models\PenjualanDetail;
@@ -20,8 +22,24 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
+        $buttonClass = '';
+        $buttonAttributes = '';
 
-        return view('produk.index', compact('kategori'));
+        $now = Carbon::now();
+        $backups = BackupProduk::select('created_at')->get();
+
+        foreach ($backups as $backup) {
+            $backupDate = Carbon::parse($backup->created_at);
+
+            if ($backupDate->month == $now->month) {
+                $buttonClass = 'disabled';
+                break;
+            }
+        }
+
+        $buttonAttributes = $buttonClass ? " disabled" : "";
+
+        return view('produk.index', compact('kategori' , 'buttonAttributes', 'buttonClass'));
     }
 
     public function data()
@@ -84,7 +102,7 @@ class ProdukController extends Controller
         $produk = Produk::latest()->first() ?? new Produk();
         $request['kode_produk'] = 'P' . tambah_nol_didepan((int)$produk->id_produk + 1, 6);
         $request['stok_lama'] = $request->stok;
-        
+
         $produk = Produk::create($request->all());
 
         return response()->json('Data berhasil disimpan', 200);
@@ -168,15 +186,24 @@ class ProdukController extends Controller
     }
 
     public function pdf($awal, $akhir)
-    {        
-        $produk = Produk::join('pembelian_detail', 'pembelian_detail.id_produk', '=', 'produk.id_produk')
-            ->join('penjualan_detail', 'penjualan_detail.id_produk', '=', 'produk.id_produk')
-            ->select('produk.*', 'pembelian_detail.*', 'penjualan_detail.*')
+    {
+        $produk = Produk::leftJoin('pembelian_detail', 'pembelian_detail.id_produk', '=', 'produk.id_produk')
+            ->leftJoin('penjualan_detail', 'penjualan_detail.id_produk', '=', 'produk.id_produk')
+            ->leftJoin('penjualan', 'penjualan_detail.id_penjualan', '=', 'penjualan.id_penjualan')
+            ->leftJoin('users', 'penjualan.id_user', '=', 'users.id')
+            ->select('produk.id_produk', 'produk.nama_produk', 'produk.created_at', 'produk.stok', 'produk.stok_lama', 'produk.harga_beli', 'pembelian_detail.id_pembelian_detail', 'pembelian_detail.jumlah', 'penjualan_detail.id_penjualan_detail', DB::raw('sum(penjualan_detail.jumlah) as stok_penjualan'), 'users.name')
             ->whereBetween('produk.created_at', [$awal, $akhir])
+            ->groupBy('produk.id_produk')
             ->get();
-        $jumlah = $produk->sum('harga_total');
+        // dd($produk);
 
-        $pdf = PDF::loadView('produk.pdf', compact('awal', 'akhir', 'produk', 'jumlah'))->setPaper('a4');
+        $total_penjualan = 0;
+
+        foreach ($produk as $item) {
+            $total_penjualan += $item->harga_beli * $item->stok_penjualan;
+        }
+
+        $pdf = PDF::loadView('produk.pdf', compact('awal', 'akhir', 'produk', 'total_penjualan'))->setPaper('a4');
         return $pdf->stream('Laporan-Produk-' . date('Y-m-d-his') . '.pdf');
     }
 }

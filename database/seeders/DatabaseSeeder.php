@@ -22,33 +22,33 @@ class DatabaseSeeder extends Seeder
             'nama_kategori' => "Minuman",
         ]);
 
-        Produk::create([
-            'id_produk' => 1,
-            'id_kategori' => 1,
-            'kode_produk' => 'P00001',
-            'nama_produk' => 'Fanta 1.5l',
-            'merk' => 'Fanta',
-            'satuan' => 'pcs',
-            'harga_beli' => 12000,
-            'diskon' => 0,
-            'harga_jual' => 15000,
-            'stok' => 50,
-            'stok_lama' => 50,
-        ]);
+        // Produk::create([
+        //     'id_produk' => 1,
+        //     'id_kategori' => 1,
+        //     'kode_produk' => 'P00001',
+        //     'nama_produk' => 'Fanta 1.5l',
+        //     'merk' => 'Fanta',
+        //     'satuan' => 'pcs',
+        //     'harga_beli' => 12000,
+        //     'diskon' => 0,
+        //     'harga_jual' => 15000,
+        //     'stok' => 50,
+        //     'stok_lama' => 50,
+        // ]);
 
-        Produk::create([
-            'id_produk' => 2,
-            'id_kategori' => 1,
-            'kode_produk' => 'P00002',
-            'nama_produk' => 'Sprite 1.5l',
-            'merk' => 'Sprite',
-            'satuan' => 'pcs',
-            'harga_beli' => 12000,
-            'diskon' => 0,
-            'harga_jual' => 15000,
-            'stok' => 50,
-            'stok_lama' => 50,
-        ]);
+        // Produk::create([
+        //     'id_produk' => 2,
+        //     'id_kategori' => 1,
+        //     'kode_produk' => 'P00002',
+        //     'nama_produk' => 'Sprite 1.5l',
+        //     'merk' => 'Sprite',
+        //     'satuan' => 'pcs',
+        //     'harga_beli' => 12000,
+        //     'diskon' => 0,
+        //     'harga_jual' => 15000,
+        //     'stok' => 40,
+        //     'stok_lama' => 40,
+        // ]);
 
         Supplier::create([
             'id_supplier' => 1,

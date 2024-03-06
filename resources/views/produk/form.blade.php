@@ -31,9 +31,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="merk" class="col-lg-2 col-lg-offset-1 control-label">Merk</label>
+                        <label for="tanggal_expire" class="col-lg-2 col-lg-offset-1 control-label">Tanggal Kadaluarsa</label>
                         <div class="col-lg-6">
-                            <input type="text" name="merk" id="merk" class="form-control">
+                            <input type="date" name="tanggal_expire" id="tanggal_expire" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

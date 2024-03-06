@@ -59,6 +59,18 @@
                                 </div>
                             </div>
                         </div>
+                        <form action={{ route('produk.backup_data') }} method="POST">
+                            @csrf
+                            <button type="submit" style="position:absolute"
+                                class="btn btn-warning btn-xs btn-flat"><i
+                                    class="fa fa-plus-circle"></i> Backup Produk</button>
+                            {{-- <button type="submit" style="position:absolute"
+                                class="btn btn-warning btn-xs btn-flat {{ $buttonClass }}"{{ $buttonAttributes }}
+                                onclick="return confirm('Anda yakin Backup Data?')>
+                                <i class="fa
+                                fa-plus-circle"></i> Backup Produk
+                            </button> --}}
+                        </form>
                     </div>
                 </div>
                 <div class="box-body table-responsive">
@@ -73,7 +85,7 @@
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Kategori</th>
-                                <th>Merk</th>
+                                <th>Tanggal Kadaluarsa</th>
                                 <th>Satuan</th>
                                 <th>Harga Beli</th>
                                 <th>Harga Jual</th>
@@ -122,7 +134,7 @@
                         data: 'nama_kategori'
                     },
                     {
-                        data: 'merk'
+                        data: 'tanggal_expire'
                     },
                     {
                         data: 'satuan'
@@ -195,6 +207,7 @@
                     $('#modal-form [name=harga_jual]').val(response.harga_jual);
                     $('#modal-form [name=diskon]').val(response.diskon);
                     $('#modal-form [name=stok]').val(response.stok);
+                    $('#modal-form [name=tanggal_expire]').val(response.tanggal_expire);
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menampilkan data');

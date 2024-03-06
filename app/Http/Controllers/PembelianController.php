@@ -78,16 +78,19 @@ class PembelianController extends Controller
         $pembelian->total_harga = $request->total;
         $pembelian->diskon = $request->diskon;
         $pembelian->bayar = $request->bayar;
+        $pembelian->created_at = $request->created_at;
         $pembelian->update();
 
         $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
         foreach ($detail as $item) {
+            $item->created_at = $request->created_at;
+            $item->save();
             $produk = Produk::find($item->id_produk);
             $produk->stok += $item->jumlah;
             $produk->update();
         }
 
-        return redirect()->route('pembelian.index');
+        return redirect()->route('pembelian.index')->with('success', 'Pembelian Berhasil');
     }
 
     public function show($id)
@@ -135,7 +138,8 @@ class PembelianController extends Controller
 
     public function pdf($awal, $akhir)
     {
-        $pembelian = PembelianDetail::join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')->select('pembelian_detail.*', 'pembelian.id_supplier')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->get();
+        $pembelian = PembelianDetail::join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')->select('pembelian_detail.*', 'pembelian.id_supplier')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->orderBy('pembelian_detail.created_at', 'asc')->get();
+        // dd($pembelian);
         $jumlah = PembelianDetail::sum('subtotal');
         $pdf  = PDF::loadView('pembelian.pdf', compact('awal', 'akhir', 'pembelian', 'jumlah'))->setPaper('a4', 'potrait');
 

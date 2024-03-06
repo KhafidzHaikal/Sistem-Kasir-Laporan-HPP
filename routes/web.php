@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    BackupProdukController,
     DashboardController,
     KategoriController,
     LaporanController,
@@ -43,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/produk/delete-selected', [ProdukController::class, 'deleteSelected'])->name('produk.delete_selected');
         Route::post('/produk/cetak-barcode', [ProdukController::class, 'cetakBarcode'])->name('produk.cetak_barcode');
         Route::get('/produk/stok/{awal}/{akhir}', [ProdukController::class, 'pdf'])->name('produk.pdf');
+        Route::post('/produk/backup', [BackupProdukController::class, 'store'])->name('produk.backup_data');
         Route::resource('/produk', ProdukController::class);
 
         Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');

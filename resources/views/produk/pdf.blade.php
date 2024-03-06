@@ -23,19 +23,6 @@
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
 
-        article,
-        aside,
-        figcaption,
-        figure,
-        footer,
-        header,
-        hgroup,
-        main,
-        nav,
-        section {
-            display: block;
-        }
-
         h2 {
             font-size: 14px;
             font-family: 'Nunito Sans', sans-serif;
@@ -46,7 +33,6 @@
             font-family: 'Times New Roman', Times, serif;
             font-size: 12px;
             font-weight: 400;
-            line-height: 2;
             color: #000000;
             text-align: center;
         }
@@ -54,8 +40,8 @@
         td,
         th {
             border: 1px solid #000000;
-            padding: 0.5rem;
             text-align: center;
+            padding: 5px;
             /* vertical-align: top; */
         }
 
@@ -69,66 +55,6 @@
         table {
             border-collapse: collapse;
             width: 100%;
-        }
-
-        .header {
-            text-align: left;
-            margin-bottom: 3em;
-
-        }
-
-        .header .left {
-            position: relative;
-            left: 0;
-        }
-
-        .header .right {
-            position: absolute;
-            right: 0;
-            width: 58%;
-            top: 11.5em;
-        }
-
-        .kop-surat .pemkab {
-            position: absolute;
-        }
-
-        .kop-surat .puskesmas {
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-
-        .kop-surat div {
-            line-height: 70%;
-        }
-
-        .kop-surat div p {
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .kop-surat div h3 {
-            font-weight: 400;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 13px;
-        }
-
-        .kop-surat div h1 {
-            letter-spacing: 0.1rem;
-            font-weight: 800;
-            font-size: 17px;
-            margin-bottom: 1rem;
-        }
-
-        .line-2 {
-            border-top: 1px solid black;
-            margin-bottom: 0.1rem;
-        }
-
-        .line-3 {
-            border-top: 3px solid black;
-            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -147,11 +73,12 @@
                 <th width="5%">No</th>
                 <th>Tanggal</th>
                 <th>Nama Barang</th>
-                <th>Stok Pembelian</th>
-                <th>Stok Penjualan</th>
-                <th>Stok Sekarang</th>
+                <th width="7%">Stok Awal</th>
+                <th width="10%">Penjualan</th>
+                <th width="10%">Stok Sekarang</th>
                 <th>Harga Satuan</th>
                 <th>Total</th>
+                <th>Kasir</th>
             </tr>
         </thead>
         <tbody>
@@ -159,17 +86,25 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ tanggal_indonesia($row->created_at, false) }}</td>
-                    <td>{{ $row->merk }}</td>
+                    <td>{{ $row->nama_produk }}</td>
                     <td>{{ $row->stok_lama }}</td>
-                    <td>{{ $row->penjualan_detail->jumlah }}</td>
+                    <td>
+                        @if (is_null($row->id_penjualan_detail))
+                            0
+                        @else
+                            {{ $row->stok_penjualan }}
+                        @endif
+                    </td>
                     <td>{{ $row->stok }}</td>
-                    <td>Rp. {{ format_uang($row->harga_beli) }}</td>
-                    <td>Rp. {{ format_uang($row->harga_total) }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_beli) }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_beli * $row->stok_penjualan) }}</td>
+                    <td>{{ $row->name }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="7"><strong>Total Stok</strong></td>
-                <td><strong>Rp. {{ format_uang($jumlah) }}</strong></td>
+                <td style="text-align: right"><strong>{{ format_uang($total_penjualan) }}</strong></td>
+                <td></td>
             </tr>
         </tbody>
     </table>

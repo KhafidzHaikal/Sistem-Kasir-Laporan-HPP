@@ -17,13 +17,13 @@ class BuatProdukTable extends Migration
             $table->increments('id_produk');
             $table->integer('id_kategori');
             $table->string('nama_produk')->unique();
-            $table->string('merk')->nullable();
             $table->string('satuan')->nullable();
             $table->integer('harga_beli');
             $table->tinyInteger('diskon')->default(0);
             $table->integer('harga_jual');
             $table->integer('stok');
             $table->integer('stok_lama')->nullable();
+            $table->date('tanggal_expire')->nullable();
             $table->timestamps();
         });
     }

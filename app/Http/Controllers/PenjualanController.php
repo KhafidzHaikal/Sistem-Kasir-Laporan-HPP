@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Penjualan;
-use App\Models\PenjualanDetail;
+use Carbon\Carbon;
 use App\Models\Produk;
 use App\Models\Setting;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use App\Models\PenjualanDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenjualanController extends Controller
@@ -150,8 +151,14 @@ class PenjualanController extends Controller
             ->whereBetween('penjualan_detail.created_at', [$awal, $akhir])
             ->get();
         // dd($penjualan);
-        $jumlah = PenjualanDetail::sum('subtotal');
-        $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'penjualan', 'jumlah'))->setPaper('a4', 'potrait');
+
+        $total = 0;
+        foreach ($penjualan as $item) 
+        {
+            $total += $item->subtotal;
+        }
+        
+        $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'penjualan', 'total'))->setPaper('a4', 'potrait');
 
         return $pdf->stream('Laporan-Penjualan-' . date('Y-m-d-his') . '.pdf');
     }
@@ -167,6 +174,7 @@ class PenjualanController extends Controller
     {
         $setting = Setting::first();
         $penjualan = Penjualan::find(session('id_penjualan'));
+        $waktu = Carbon::parse(date(now()))->translatedFormat('d F Y H:i:s');
         if (!$penjualan) {
             abort(404);
         }
@@ -174,7 +182,7 @@ class PenjualanController extends Controller
             ->where('id_penjualan', session('id_penjualan'))
             ->get();
 
-        return view('penjualan.nota_kecil', compact('setting', 'penjualan', 'detail'));
+        return view('penjualan.nota_kecil', compact('setting', 'penjualan', 'detail', 'waktu'));
     }
 
     public function notaBesar()

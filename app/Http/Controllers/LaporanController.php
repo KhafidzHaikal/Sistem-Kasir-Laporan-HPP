@@ -130,29 +130,66 @@ class LaporanController extends Controller
         $produk = Produk::join('pembelian_detail', 'produk.id_produk', '=', 'pembelian_detail.id_produk')->select('produk.*', 'pembelian_detail.*')->get();
         $pembelian = PembelianDetail::join('produk', 'pembelian_detail.id_produk', '=', 'produk.id_produk')->select('produk.*', 'pembelian_detail.*')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->get();
 
+        $total_laba_rugi = 0;
+
+        foreach ($produk as $row) {
+            $total_laba_rugi += ($row->harga_jual * $row->stok) - $row->total_harga_beli;
+        }
+
         $jumlah = $produk->sum('total_harga_beli');
 
-        $pdf = PDF::loadView('laporan.laba_rugi', compact('awal', 'akhir', 'pembelian', 'jumlah'))->setPaper('a4');
+        $pdf = PDF::loadView('laporan.laba_rugi', compact('awal', 'akhir', 'pembelian', 'jumlah', 'total_laba_rugi'))->setPaper('a4');
         return $pdf->stream('Laporan-laba_Rugi-' . date('Y-m-d-his') . '.pdf');
     }
 
     public function hpp($tanggal_awal, $tanggal_akhir)
     {
         /** Kondisi Bulan dengan hari kurang dari 1 bulan */
-
         // if ($tanggal_awal && $tanggal_akhir && Carbon::parse($tanggal_awal)->diffInDays(Carbon::parse($tanggal_akhir)) <= 31) {
         //     $results = BackupProduk::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])->get();
         // } else {
-        $results = DB::table('backup_produks')
-            ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
-            ->select('backup_produks.id_produk', 'backup_produks.nama_produk', 'backup_produks.satuan', 'backup_produks.harga_beli', 'backup_produks.stok_akhir', DB::raw('sum(backup_produks.stok_awal) as stok_awal'), DB::raw('sum(backup_produks.stok_akhir) as stok_akhir'), DB::raw('sum(backup_produks.stok_belanja) as stok_belanja'), DB::raw('sum(backup_produks.total_belanja) as total_belanja'))
-            ->groupBy('backup_produks.id_produk')
-            ->whereBetween('backup_produks.created_at', [$tanggal_awal, $tanggal_akhir])
-            ->distinct('backup_produks.id_produk')
-            ->get();
+        // $results = DB::table('backup_produks')
+        //     ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
+        //     ->select(
+        //         'backup_produks.id_produk',
+        //         'backup_produks.nama_produk',
+        //         'backup_produks.satuan',
+        //         'backup_produks.harga_beli',
+        //         DB::raw('(select stok_awal from backup_produks where produk.id_produk = backup_produks.id_produk order by created_at asc limit 1) as stok_awal'),
+        //         DB::raw('(select stok_akhir from backup_produks where produk.id_produk = backup_produks.id_produk order by created_at desc limit 1) as stok_akhir'),
+        //         DB::raw('sum(backup_produks.stok_belanja) as stok_belanja'),
+        //         DB::raw('sum(backup_produks.total_belanja) as total_belanja')
+        //     )
+        //     ->whereBetween('backup_produks.created_at', [$tanggal_awal, $tanggal_akhir])
+        //     ->groupBy('backup_produks.id_produk')
+        //     ->distinct('backup_produks.id_produk')
+        //     ->get();
         // }
 
-        $pdf = PDF::loadView('laporan.hpp', compact('tanggal_awal', 'tanggal_akhir', 'results'))->setPaper('a4', 'landscape');
+        $results = DB::table('backup_produks')
+            ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
+            ->whereBetween('backup_produks.created_at', [$tanggal_awal, $tanggal_akhir])
+            ->select(
+                'backup_produks.id_produk',
+                'backup_produks.nama_produk',
+                'backup_produks.satuan',
+                'backup_produks.harga_beli',
+                DB::raw("(select stok_awal from backup_produks as bp where bp.id_produk = backup_produks.id_produk and bp.created_at >= '$tanggal_awal' order by created_at asc limit 1) as stok_awal"),
+                DB::raw("(select stok_akhir from backup_produks as bp where bp.id_produk = backup_produks.id_produk and bp.created_at <= '$tanggal_akhir' order by created_at desc limit 1) as stok_akhir"),
+                DB::raw('sum(backup_produks.stok_belanja) as stok_belanja'),
+                DB::raw('sum(backup_produks.total_belanja) as total_belanja')
+            )
+            ->groupBy('backup_produks.id_produk')
+            ->get();
+
+        // dd($results);
+        $totalValue = 0;
+
+        foreach ($results as $result) {
+            $totalValue += $result->harga_beli * $result->stok_awal + $result->total_belanja - $result->harga_beli * $result->stok_akhir;
+        }
+
+        $pdf = PDF::loadView('laporan.hpp', compact('tanggal_awal', 'tanggal_akhir', 'results', 'totalValue'))->setPaper('a4', 'landscape');
         return $pdf->stream('Laporan-HPP-' . date('Y-m-d-his') . '.pdf');
     }
 }
