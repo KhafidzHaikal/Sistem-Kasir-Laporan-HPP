@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kategori;
+use Carbon\Carbon;
 use App\Models\Member;
-use App\Models\Pembelian;
-use App\Models\Pengeluaran;
-use App\Models\Penjualan;
 use App\Models\Produk;
+use App\Models\Kategori;
 use App\Models\Supplier;
-use Illuminate\Http\Request;
+use App\Models\Pembelian;
+use App\Models\Penjualan;
+use App\Models\Pengeluaran;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class DashboardController extends Controller
 {
@@ -37,6 +38,14 @@ class DashboardController extends Controller
             $data_pendapatan[] += $pendapatan;
 
             $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
+        }
+
+        $expired_products = Produk::where('tanggal_expire', '<=', Carbon::now()->addDays(7))
+            ->whereNotNull('tanggal_expire')
+            ->get();
+
+        if ($expired_products->isNotEmpty()) {
+            Alert::warning('Produk Kadaluarsa', "Halo, Produk " . $expired_products->count() . " produk yang habis masa berlaku dalam 7 hari ke depan. Harap pastikan untuk mengelola stok produk Anda.");
         }
 
         if (auth()->user()->level == 1) {

@@ -27,7 +27,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Laporan Pembelian</h5>
+                                        <h5 class="modal-title">Laporan Stok Produk</h5>
                                         <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                                         </button>
                                     </div>
@@ -53,7 +53,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <a target="_blank"
-                                            onclick="this.href='/produk/stok/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
+                                        onclick="openProduk(document.getElementById('awal').value, document.getElementById('akhir').value)"
                                             class="btn btn-primary">Cetak</a>
                                     </div>
                                 </div>
@@ -262,6 +262,10 @@
                     .attr('action', url)
                     .submit();
             }
+        }
+
+        function openProduk(awal, akhir) {
+            window.open('/produk/stok/' + awal + '/' + akhir, 'Laporan Produk', 'width=900,height=675');
         }
     </script>
 @endpush

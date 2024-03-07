@@ -8,7 +8,7 @@ use App\Models\Setting;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Models\PenjualanDetail;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class PenjualanController extends Controller
 {
@@ -160,7 +160,7 @@ class PenjualanController extends Controller
         
         $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'penjualan', 'total'))->setPaper('a4', 'potrait');
 
-        return $pdf->stream('Laporan-Penjualan-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->inline('Laporan-Penjualan-' . date('Y-m-d-his') . '.pdf');
     }
 
     public function selesai()
@@ -198,6 +198,6 @@ class PenjualanController extends Controller
 
         $pdf = PDF::loadView('penjualan.nota_besar', compact('setting', 'penjualan', 'detail'));
         $pdf->setPaper(0, 0, 609, 440, 'potrait');
-        return $pdf->stream('Transaksi-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->inline('Transaksi-' . date('Y-m-d-his') . '.pdf');
     }
 }

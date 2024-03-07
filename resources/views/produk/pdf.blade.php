@@ -8,8 +8,6 @@
     <title>Laporan Stok Produk</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Roboto:wght@100;300;400;500;700;900&display=swap');
-
         *,
         *::before,
         *::after {
@@ -17,7 +15,6 @@
         }
 
         html {
-            font-family: 'Roboto', sans-serif;
             line-height: normal;
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -25,7 +22,6 @@
 
         h2 {
             font-size: 14px;
-            font-family: 'Nunito Sans', sans-serif;
         }
 
         body {
@@ -71,7 +67,7 @@
         <thead>
             <tr>
                 <th width="5%">No</th>
-                <th>Tanggal</th>
+                <th width="10%">Tanggal</th>
                 <th>Nama Barang</th>
                 <th width="7%">Stok Awal</th>
                 <th width="10%">Penjualan</th>
@@ -86,7 +82,7 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ tanggal_indonesia($row->created_at, false) }}</td>
-                    <td>{{ $row->nama_produk }}</td>
+                    <td style="text-align: left">{{ $row->nama_produk }}</td>
                     <td>{{ $row->stok_lama }}</td>
                     <td>
                         @if (is_null($row->id_penjualan_detail))

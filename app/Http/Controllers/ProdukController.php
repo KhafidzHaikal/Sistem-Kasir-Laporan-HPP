@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\BackupProduk;
 use Illuminate\Http\Request;
-use App\Models\PembelianDetail;
-use App\Models\PenjualanDetail;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class ProdukController extends Controller
@@ -182,7 +180,7 @@ class ProdukController extends Controller
         $no  = 1;
         $pdf = PDF::loadView('produk.barcode', compact('dataproduk', 'no'));
         $pdf->setPaper('a4', 'potrait');
-        return $pdf->stream('produk.pdf');
+        return $pdf->inline('produk.pdf');
     }
 
     public function pdf($awal, $akhir)
@@ -204,6 +202,6 @@ class ProdukController extends Controller
         }
 
         $pdf = PDF::loadView('produk.pdf', compact('awal', 'akhir', 'produk', 'total_penjualan'))->setPaper('a4');
-        return $pdf->stream('Laporan-Produk-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->inline('Laporan-Produk-' . date('Y-m-d-his') . '.pdf');
     }
 }

@@ -54,8 +54,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a target="_blank"
-                                        onclick="this.href='/laporan/laba-rugi/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
+                                    <a target="_blank" {{-- onclick="this.href='/laporan/laba-rugi/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value" --}}
+                                        onclick="openLaporanLabaRugi(document.getElementById('awal').value, document.getElementById('akhir').value)"
                                         class="btn btn-primary">Cetak</a>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <a target="_blank"
-                                        onclick="this.href='/laporan/hpp/'+document.getElementById('tanggal_awal').value+ '/' +document.getElementById('tanggal_akhir').value"
+                                    onclick="openLaporanHPP(document.getElementById('tanggal_awal').value, document.getElementById('tanggal_akhir').value)"
                                         class="btn btn-primary">Cetak</a>
                                 </div>
                             </div>
@@ -166,6 +166,14 @@
 
         function updatePeriode() {
             $('#modal-form').modal('show');
+        }
+
+        function openLaporanLabaRugi(awal, akhir) {
+            window.open('/laporan/laba-rugi/' + awal + '/' + akhir, 'Laporan Laba Rugi', 'width=900,height=675');
+        }
+
+        function openLaporanHPP(tanggal_awal, tanggal_akhir) {
+            window.open('/laporan/hpp/' + tanggal_awal + '/' + tanggal_akhir, 'Laporan HPP', 'width=900,height=675');
         }
     </script>
 @endpush

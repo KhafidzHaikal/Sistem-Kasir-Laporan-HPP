@@ -6,6 +6,7 @@ use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,34 +23,28 @@ class DatabaseSeeder extends Seeder
             'nama_kategori' => "Minuman",
         ]);
 
-        // Produk::create([
-        //     'id_produk' => 1,
-        //     'id_kategori' => 1,
-        //     'kode_produk' => 'P00001',
-        //     'nama_produk' => 'Fanta 1.5l',
-        //     'merk' => 'Fanta',
-        //     'satuan' => 'pcs',
-        //     'harga_beli' => 12000,
-        //     'diskon' => 0,
-        //     'harga_jual' => 15000,
-        //     'stok' => 50,
-        //     'stok_lama' => 50,
-        // ]);
+/////////////////////////////////////////////////////////////////////////
+        // $json = Storage::disk('local')->get('/json/produk.json');
+        // $produks = json_decode($json, true);
 
-        // Produk::create([
-        //     'id_produk' => 2,
-        //     'id_kategori' => 1,
-        //     'kode_produk' => 'P00002',
-        //     'nama_produk' => 'Sprite 1.5l',
-        //     'merk' => 'Sprite',
-        //     'satuan' => 'pcs',
-        //     'harga_beli' => 12000,
-        //     'diskon' => 0,
-        //     'harga_jual' => 15000,
-        //     'stok' => 40,
-        //     'stok_lama' => 40,
-        // ]);
-
+        // foreach ($produks as $produk) {
+        //     Produk::query()->updateOrCreate([
+        //         'id_produk' => $produk['id_produk'],
+        //         'id_kategori' => $produk['id_kategori'],
+        //         'kode_produk' => $produk['kode_produk'],
+        //         'nama_produk' => $produk['nama_produk'],
+        //         'satuan' => $produk['satuan'],
+        //         'harga_beli' => $produk['harga_beli'],
+        //         'diskon' => $produk['diskon'],
+        //         'harga_jual' => $produk['harga_jual'],
+        //         'stok' => $produk['stok'],
+        //         'stok_lama' => $produk['stok_lama'],
+        //         'tanggal_expire' => date(now()),
+        //         'created_at' => $produk['created_at'],
+        //         'updated_at' => $produk['update_at']
+        //     ]);
+        // }
+////////////////////////////////////////////////////////////////////////////////////
         Supplier::create([
             'id_supplier' => 1,
             'nama' => 'Indomaret',

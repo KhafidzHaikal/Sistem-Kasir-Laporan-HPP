@@ -7,7 +7,7 @@ use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use App\Models\Produk;
 use App\Models\Supplier;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class PembelianController extends Controller
 {
@@ -139,10 +139,9 @@ class PembelianController extends Controller
     public function pdf($awal, $akhir)
     {
         $pembelian = PembelianDetail::join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')->select('pembelian_detail.*', 'pembelian.id_supplier')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->orderBy('pembelian_detail.created_at', 'asc')->get();
-        // dd($pembelian);
         $jumlah = PembelianDetail::sum('subtotal');
         $pdf  = PDF::loadView('pembelian.pdf', compact('awal', 'akhir', 'pembelian', 'jumlah'))->setPaper('a4', 'potrait');
 
-        return $pdf->stream('Laporan-Pembelian-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->inline('Laporan-Pembelian-' . date('Y-m-d-his') . '.pdf');
     }
 }

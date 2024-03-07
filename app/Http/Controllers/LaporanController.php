@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Produk;
+
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use App\Models\Pembelian;
 use App\Models\Penjualan;
 use App\Models\Pengeluaran;
-use App\Models\BackupProduk;
 use Illuminate\Http\Request;
 use App\Models\PembelianDetail;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
@@ -122,7 +121,7 @@ class LaporanController extends Controller
         });
         $pdf  = Pdf::loadView('laporan.pdf', compact('awal', 'akhir', 'data'))->setPaper('a4', 'potrait');
 
-        return $pdf->stream('Laporan-pendapatan-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->inline('Laporan-pendapatan-' . date('Y-m-d-his') . '.pdf');
     }
 
     public function labaPdf($awal, $akhir)
@@ -139,33 +138,11 @@ class LaporanController extends Controller
         $jumlah = $produk->sum('total_harga_beli');
 
         $pdf = PDF::loadView('laporan.laba_rugi', compact('awal', 'akhir', 'pembelian', 'jumlah', 'total_laba_rugi'))->setPaper('a4');
-        return $pdf->stream('Laporan-laba_Rugi-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->inline('Laporan-laba_Rugi-' . date('Y-m-d-his') . '.pdf');
     }
 
     public function hpp($tanggal_awal, $tanggal_akhir)
     {
-        /** Kondisi Bulan dengan hari kurang dari 1 bulan */
-        // if ($tanggal_awal && $tanggal_akhir && Carbon::parse($tanggal_awal)->diffInDays(Carbon::parse($tanggal_akhir)) <= 31) {
-        //     $results = BackupProduk::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])->get();
-        // } else {
-        // $results = DB::table('backup_produks')
-        //     ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
-        //     ->select(
-        //         'backup_produks.id_produk',
-        //         'backup_produks.nama_produk',
-        //         'backup_produks.satuan',
-        //         'backup_produks.harga_beli',
-        //         DB::raw('(select stok_awal from backup_produks where produk.id_produk = backup_produks.id_produk order by created_at asc limit 1) as stok_awal'),
-        //         DB::raw('(select stok_akhir from backup_produks where produk.id_produk = backup_produks.id_produk order by created_at desc limit 1) as stok_akhir'),
-        //         DB::raw('sum(backup_produks.stok_belanja) as stok_belanja'),
-        //         DB::raw('sum(backup_produks.total_belanja) as total_belanja')
-        //     )
-        //     ->whereBetween('backup_produks.created_at', [$tanggal_awal, $tanggal_akhir])
-        //     ->groupBy('backup_produks.id_produk')
-        //     ->distinct('backup_produks.id_produk')
-        //     ->get();
-        // }
-
         $results = DB::table('backup_produks')
             ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
             ->whereBetween('backup_produks.created_at', [$tanggal_awal, $tanggal_akhir])
@@ -189,7 +166,7 @@ class LaporanController extends Controller
             $totalValue += $result->harga_beli * $result->stok_awal + $result->total_belanja - $result->harga_beli * $result->stok_akhir;
         }
 
-        $pdf = PDF::loadView('laporan.hpp', compact('tanggal_awal', 'tanggal_akhir', 'results', 'totalValue'))->setPaper('a4', 'landscape');
-        return $pdf->stream('Laporan-HPP-' . date('Y-m-d-his') . '.pdf');
+        $pdf = PDF::loadView('laporan.hpp', compact('tanggal_awal', 'tanggal_akhir', 'results', 'totalValue'))->setPaper('a4')->setOrientation('landscape');
+        return $pdf->inline('Laporan-HPP-' . date('Y-m-d-his') . '.pdf');
     }
 }
