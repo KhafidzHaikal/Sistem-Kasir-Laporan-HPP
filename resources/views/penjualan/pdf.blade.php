@@ -25,7 +25,6 @@
 
         h2 {
             font-size: 14px;
-            font-family: 'Nunito Sans', sans-serif;
         }
 
         body {
@@ -35,6 +34,7 @@
             font-weight: 400;
             color: #000000;
             text-align: center;
+            
         }
 
         td,
@@ -43,6 +43,7 @@
             text-align: center;
             padding: 5px;
             /* vertical-align: top; */
+            letter-spacing: 2rem;
         }
 
         td {
@@ -52,15 +53,6 @@
         table {
             border-collapse: collapse;
             width: 100%;
-        }
-
-        .uang {
-            border-width: 1px 0px;
-            width: 2%;
-        }
-        .nilai {
-            border-width: 1px 1px 1px 0px;
-            text-align: right;
         }
     </style>
 </head>
@@ -91,7 +83,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ tanggal_indonesia($row->created_at, false) }}</td>
                     <td>{{ $row->user->name }}</td>
-                    <td>{{ $row->produk->nama_produk }}</td>
+                    <td style="text-align: left">{{ $row->produk->nama_produk }}</td>
                     <td>{{ $row->jumlah }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_jual) }}</td>
                     <td style="text-align: right">{{ format_uang($row->subtotal) }}</td>

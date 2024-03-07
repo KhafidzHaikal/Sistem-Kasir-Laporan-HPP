@@ -140,7 +140,7 @@ class PembelianController extends Controller
     {
         $pembelian = PembelianDetail::join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')->select('pembelian_detail.*', 'pembelian.id_supplier')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->orderBy('pembelian_detail.created_at', 'asc')->get();
         $jumlah = PembelianDetail::sum('subtotal');
-        $pdf  = PDF::loadView('pembelian.pdf', compact('awal', 'akhir', 'pembelian', 'jumlah'))->setPaper('a4', 'potrait');
+        $pdf  = PDF::loadView('pembelian.pdf', compact('awal', 'akhir', 'pembelian', 'jumlah'));
 
         return $pdf->inline('Laporan-Pembelian-' . date('Y-m-d-his') . '.pdf');
     }

@@ -9,6 +9,7 @@ use App\Models\Kategori;
 use App\Models\BackupProduk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf as Barpdf;
 
 class ProdukController extends Controller
 {
@@ -23,19 +24,20 @@ class ProdukController extends Controller
         $buttonClass = '';
         $buttonAttributes = '';
 
-        $now = Carbon::now();
-        $backups = BackupProduk::select('created_at')->get();
+        // Data disabled jika sudah backup tiap bulan
+        // $now = Carbon::now();
+        // $backups = BackupProduk::select('created_at')->get();
 
-        foreach ($backups as $backup) {
-            $backupDate = Carbon::parse($backup->created_at);
+        // foreach ($backups as $backup) {
+        //     $backupDate = Carbon::parse($backup->created_at);
 
-            if ($backupDate->month == $now->month) {
-                $buttonClass = 'disabled';
-                break;
-            }
-        }
+        //     if ($backupDate->month == $now->month) {
+        //         $buttonClass = 'disabled';
+        //         break;
+        //     }
+        // }
 
-        $buttonAttributes = $buttonClass ? " disabled" : "";
+        // $buttonAttributes = $buttonClass ? " disabled" : "";
 
         return view('produk.index', compact('kategori' , 'buttonAttributes', 'buttonClass'));
     }
@@ -103,7 +105,7 @@ class ProdukController extends Controller
 
         $produk = Produk::create($request->all());
 
-        return response()->json('Data berhasil disimpan', 200);
+        return redirect()->back()->with('success', 'Produk Berhasil Ditambahkan');
     }
 
     /**
@@ -142,7 +144,7 @@ class ProdukController extends Controller
         $produk = Produk::find($id);
         $produk->update($request->all());
 
-        return response()->json('Data berhasil disimpan', 200);
+        return redirect()->back()->with('success', 'Produk Berhasil Diubah');;
     }
 
     /**
@@ -178,9 +180,9 @@ class ProdukController extends Controller
         }
 
         $no  = 1;
-        $pdf = PDF::loadView('produk.barcode', compact('dataproduk', 'no'));
+        $pdf = Barpdf::loadView('produk.barcode', compact('dataproduk', 'no'));
         $pdf->setPaper('a4', 'potrait');
-        return $pdf->inline('produk.pdf');
+        return $pdf->stream('produk.pdf');
     }
 
     public function pdf($awal, $akhir)

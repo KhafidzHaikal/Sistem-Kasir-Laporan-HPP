@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="" method="post" class="form-horizontal">
+        <form action={{ route('produk.store') }}  method="post" class="form-horizontal">
             @csrf
             @method('post')
 

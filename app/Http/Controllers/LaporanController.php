@@ -11,6 +11,7 @@ use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf as Barpdf;
 
 class LaporanController extends Controller
 {
@@ -119,9 +120,9 @@ class LaporanController extends Controller
         $data = collect($data)->map(function ($item) {
             return (object) $item;
         });
-        $pdf  = Pdf::loadView('laporan.pdf', compact('awal', 'akhir', 'data'))->setPaper('a4', 'potrait');
+        $pdf  = Barpdf::loadView('laporan.pdf', compact('awal', 'akhir', 'data'))->setPaper('a4', 'potrait');
 
-        return $pdf->inline('Laporan-pendapatan-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->stream('Laporan-pendapatan-' . date('Y-m-d-his') . '.pdf');
     }
 
     public function labaPdf($awal, $akhir)

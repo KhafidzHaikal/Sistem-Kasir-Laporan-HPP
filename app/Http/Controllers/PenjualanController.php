@@ -158,8 +158,7 @@ class PenjualanController extends Controller
             $total += $item->subtotal;
         }
         
-        $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'penjualan', 'total'))->setPaper('a4', 'potrait');
-
+        $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'penjualan', 'total'));
         return $pdf->inline('Laporan-Penjualan-' . date('Y-m-d-his') . '.pdf');
     }
 
@@ -197,7 +196,6 @@ class PenjualanController extends Controller
             ->get();
 
         $pdf = PDF::loadView('penjualan.nota_besar', compact('setting', 'penjualan', 'detail'));
-        $pdf->setPaper(0, 0, 609, 440, 'potrait');
         return $pdf->inline('Transaksi-' . date('Y-m-d-his') . '.pdf');
     }
 }

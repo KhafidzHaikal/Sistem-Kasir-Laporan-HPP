@@ -13,7 +13,7 @@ class PenjualanDetailController extends Controller
 {
     public function index()
     {
-        $produk = Produk::orderBy('nama_produk')->get();
+        $produk = Produk::orderBy('nama_produk')->where('stok', '>', 1)->get();
         $member = Member::orderBy('nama')->get();
         $diskon = Setting::first()->diskon ?? 0;
 
@@ -42,18 +42,17 @@ class PenjualanDetailController extends Controller
         $total = 0;
         $total_item = 0;
 
-        foreach ($detail as $item) {
+        foreach ($detail as $item) {            
             $row = array();
             $row['kode_produk'] = '<span class="label label-success">' . $item->produk['kode_produk'] . '</span';
             $row['nama_produk'] = $item->produk['nama_produk'];
             $row['harga_jual']  = 'Rp. ' . format_uang($item->harga_jual);
-            // $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="' . $item->id_penjualan_detail . '" value="' . $item->jumlah . '">';
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="' . $item->id_penjualan_detail . '" data-url="' . route('produk.stok', $item->produk->id_produk) . '" value="' . $item->jumlah . '" max="' . $item->produk->stok . '">';
             $row['diskon']      = $item->diskon . '%';
             $row['subtotal']    = 'Rp. ' . format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
-                                    <button onclick="deleteData(`' . route('transaksi.destroy', $item->id_penjualan_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                                </div>';
+            <button onclick="deleteData(`' . route('transaksi.destroy', $item->id_penjualan_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+            </div>';
             $data[] = $row;
 
             $total += $item->harga_jual * $item->jumlah;
@@ -61,8 +60,8 @@ class PenjualanDetailController extends Controller
         }
         $data[] = [
             'kode_produk' => '
-                <div class="total hide">' . $total . '</div>
-                <div class="total_item hide">' . $total_item . '</div>',
+            <div class="total hide">' . $total . '</div>
+            <div class="total_item hide">' . $total_item . '</div>',
             'nama_produk' => '',
             'harga_jual'  => '',
             'jumlah'      => '',
@@ -70,12 +69,12 @@ class PenjualanDetailController extends Controller
             'subtotal'    => '',
             'aksi'        => '',
         ];
-
+        
         return datatables()
-            ->of($data)
-            ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
-            ->make(true);
+        ->of($data)
+        ->addIndexColumn()
+        ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
+        ->make(true);
     }
 
     public function store(Request $request)
@@ -84,7 +83,6 @@ class PenjualanDetailController extends Controller
         if (!$produk) {
             return response()->json('Data gagal disimpan', 400);
         }
-
         $detail = new PenjualanDetail();
         $detail->id_penjualan = $request->id_penjualan;
         $detail->id_produk = $produk->id_produk;

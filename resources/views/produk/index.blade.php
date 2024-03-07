@@ -53,7 +53,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <a target="_blank"
-                                        onclick="openProduk(document.getElementById('awal').value, document.getElementById('akhir').value)"
+                                            onclick="openProduk(document.getElementById('awal').value, document.getElementById('akhir').value)"
                                             class="btn btn-primary">Cetak</a>
                                     </div>
                                 </div>
@@ -61,8 +61,7 @@
                         </div>
                         <form action={{ route('produk.backup_data') }} method="POST">
                             @csrf
-                            <button type="submit" style="position:absolute"
-                                class="btn btn-warning btn-xs btn-flat"><i
+                            <button type="submit" style="position:absolute" class="btn btn-warning btn-xs btn-flat"><i
                                     class="fa fa-plus-circle"></i> Backup Produk</button>
                             {{-- <button type="submit" style="position:absolute"
                                 class="btn btn-warning btn-xs btn-flat {{ $buttonClass }}"{{ $buttonAttributes }}
@@ -159,19 +158,19 @@
                 ]
             });
 
-            $('#modal-form').validator().on('submit', function(e) {
-                if (!e.preventDefault()) {
-                    $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
-                        .done((response) => {
-                            $('#modal-form').modal('hide');
-                            table.ajax.reload();
-                        })
-                        .fail((errors) => {
-                            alert('Tidak dapat menyimpan data');
-                            return;
-                        });
-                }
-            });
+            // $('#modal-form').validator().on('submit', function(e) {
+            //     if (!e.preventDefault()) {
+            //         $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+            //             .done((response) => {
+            //                 $('#modal-form').modal('hide');
+            //                 table.ajax.reload();
+            //             })
+            //             .fail((errors) => {
+            //                 alert('Tidak dapat menyimpan data');
+            //                 console.log(errors);
+            //             });
+            //     }
+            // });
 
             $('[name=select_all]').on('click', function() {
                 $(':checkbox').prop('checked', this.checked);
@@ -233,18 +232,38 @@
 
         function deleteSelected(url) {
             if ($('input:checked').length > 1) {
-                if (confirm('Yakin ingin menghapus data terpilih?')) {
-                    $.post(url, $('.form-produk').serialize())
-                        .done((response) => {
-                            table.ajax.reload();
-                        })
-                        .fail((errors) => {
-                            alert('Tidak dapat menghapus data');
-                            return;
-                        });
-                }
+                Swal.fire({
+                    title: 'Hapus Data',
+                    text: 'Yakin ingin menghapus data terpilih?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post(url, $('.form-produk').serialize())
+                            .done((response) => {
+                                table.ajax.reload();
+                            })
+                            .fail((errors) => {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Tidak dapat menghapus data',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                });
+                                return;
+                            });
+                    }
+                });
             } else {
-                alert('Pilih data yang akan dihapus');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Pilih data yang akan dihapus',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
                 return;
             }
         }

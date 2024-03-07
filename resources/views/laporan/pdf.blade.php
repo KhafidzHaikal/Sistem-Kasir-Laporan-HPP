@@ -8,8 +8,6 @@
     <title>Laporan Pendapatan</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Roboto:wght@100;300;400;500;700;900&display=swap');
-
         *,
         *::before,
         *::after {
@@ -25,7 +23,6 @@
 
         h2 {
             font-size: 14px;
-            font-family: 'Nunito Sans', sans-serif;
         }
 
         body {
@@ -46,7 +43,6 @@
         }
 
         td {
-            text-align: left;
             word-spacing: 0px;
             vertical-align: top;
         }
@@ -82,10 +78,10 @@
                 <tr>
                     <td>{{ $row->DT_RowIndex }}</td>
                     <td>{{ $row->tanggal }}</td>
-                    <td>{{ $row->penjualan }}</td>
-                    <td>{{ $row->pembelian }}</td>
-                    <td>{{ $row->pengeluaran }}</td>
-                    <td>{{ $row->pendapatan }}</td>
+                    <td style="text-align: right">{{ $row->penjualan }}</td>
+                    <td style="text-align: right">{{ $row->pembelian }}</td>
+                    <td style="text-align: right">{{ $row->pengeluaran }}</td>
+                    <td style="text-align: right">{{ $row->pendapatan }}</td>
                 </tr>
             @endforeach
         </tbody>

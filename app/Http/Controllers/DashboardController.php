@@ -45,7 +45,7 @@ class DashboardController extends Controller
             ->get();
 
         if ($expired_products->isNotEmpty()) {
-            Alert::warning('Produk Kadaluarsa', "Halo, Produk " . $expired_products->count() . " produk yang habis masa berlaku dalam 7 hari ke depan. Harap pastikan untuk mengelola stok produk Anda.");
+            Alert::warning('Produk Kadaluarsa', "Halo, " . $expired_products->count() . " Produk yang habis masa berlaku dalam 7 hari ke depan. Harap pastikan untuk mengelola stok produk Anda.");
         }
 
         if (auth()->user()->level == 1) {

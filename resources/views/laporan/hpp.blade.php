@@ -124,9 +124,7 @@
                         <td width="5%">{{ $result->satuan }}</td>
                         <td style="text-align: right">{{ format_uang($result->harga_beli) }}</td>
                         <td style="text-align: right">{{ format_uang($result->harga_beli * $result->stok_akhir) }}</td>
-                        <td style="text-align: right">
-                            {{ format_uang($result->harga_beli * $result->stok_awal + $result->total_belanja - $result->harga_beli * $result->stok_akhir) }}
-                        </td>
+                        <td style="text-align: right">{{ format_uang($result->harga_beli * $result->stok_awal + $result->total_belanja - $result->harga_beli * $result->stok_akhir) }}</td>
                     </tr>
                 @endif
             @endforeach

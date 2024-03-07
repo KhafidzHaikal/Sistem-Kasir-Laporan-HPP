@@ -266,7 +266,6 @@
                 $('#totalrp').val('Rp. '+ response.totalrp);
                 $('#bayarrp').val('Rp. '+ response.bayarrp);
                 $('#bayar').val(response.bayar);
-                $('#bayar').val(response.bayar);
                 $('.tampil-bayar').text('Rp. '+ response.bayarrp);
                 $('.tampil-terbilang').text(response.terbilang);
             })

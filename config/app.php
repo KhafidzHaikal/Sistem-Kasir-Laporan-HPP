@@ -167,7 +167,7 @@ return [
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
-        // Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         /*

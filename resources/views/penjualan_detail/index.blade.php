@@ -206,45 +206,46 @@
             table2 = $('.table-produk').DataTable();
 
             $(document).on('input', '.quantity', function() {
+                let self = this;
                 let id = $(this).data('id');
                 let jumlah = parseInt($(this).val());
-                
+
                 $.get($(this).data('url'), function(data) {
                     let stok = parseInt(data.stok);
 
                     if (jumlah < 1) {
-                        $(this).val(1);
+                        $(self).val(1);
                         alert('Jumlah produk ' + data.nama_produk + ' tidak boleh kurang dari 1');
                         return;
                     }
                     if (jumlah > stok) {
-                        $(this).val(stok);
+                        $(self).val(stok);
                         alert('Jumlah produk pada produk ' + data.nama_produk +
                             ' stok yang tersedia ' + stok + '');
                         return;
                     }
                     if (jumlah > 10000) {
-                        $(this).val(10000);
+                        $(self).val(10000);
                         alert('Jumlah produk ' + data.nama_produk +
                         ' tidak boleh lebih dari 10000');
                         return;
                     }
-                });
 
-                $.post(`{{ url('/transaksi') }}/${id}`, {
-                        '_token': $('[name=csrf-token]').attr('content'),
-                        '_method': 'put',
-                        'jumlah': jumlah
-                    })
-                    .done(response => {
-                        $(this).on('mouseout', function() {
-                            table.ajax.reload(() => loadForm($('#diskon').val()));
+                    $.post(`{{ url('/transaksi') }}/${id}`, {
+                            '_token': $('[name=csrf-token]').attr('content'),
+                            '_method': 'put',
+                            'jumlah': jumlah
+                        })
+                        .done(response => {
+                            $(self).on('mouseout', function() {
+                                table.ajax.reload(() => loadForm($('#diskon').val()));
+                            });
+                        })
+                        .fail(errors => {
+                            alert('Tidak dapat menyimpan data');
+                            return;
                         });
-                    })
-                    .fail(errors => {
-                        alert('Tidak dapat menyimpan data');
-                        return;
-                    });
+                });
             });
 
             $(document).on('input', '#diskon', function() {
