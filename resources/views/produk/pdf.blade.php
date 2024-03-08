@@ -70,11 +70,11 @@
                 <th width="10%">Tanggal</th>
                 <th>Nama Barang</th>
                 <th width="7%">Stok Awal</th>
-                <th width="10%">Penjualan</th>
+                <th width="7%">Penjualan</th>
                 <th width="10%">Stok Sekarang</th>
-                <th>Harga Satuan</th>
+                <th width="9%">Harga Satuan</th>
                 <th>Total</th>
-                <th>Kasir</th>
+                <th width="10%">Kasir</th>
             </tr>
         </thead>
         <tbody>

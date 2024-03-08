@@ -24,26 +24,26 @@ class DatabaseSeeder extends Seeder
         ]);
 
 /////////////////////////////////////////////////////////////////////////
-        $json = Storage::disk('local')->get('/json/produk.json');
-        $produks = json_decode($json, true);
+        // $json = Storage::disk('local')->get('/json/produk.json');
+        // $produks = json_decode($json, true);
 
-        foreach ($produks as $produk) {
-            Produk::query()->updateOrCreate([
-                'id_produk' => $produk['id_produk'],
-                'id_kategori' => $produk['id_kategori'],
-                'kode_produk' => $produk['kode_produk'],
-                'nama_produk' => $produk['nama_produk'],
-                'satuan' => $produk['satuan'],
-                'harga_beli' => $produk['harga_beli'],
-                'diskon' => $produk['diskon'],
-                'harga_jual' => $produk['harga_jual'],
-                'stok' => $produk['stok'],
-                'stok_lama' => $produk['stok_lama'],
-                'tanggal_expire' => now()->addDays(14),
-                'created_at' => $produk['created_at'],
-                'updated_at' => $produk['update_at']
-            ]);
-        }
+        // foreach ($produks as $produk) {
+        //     Produk::query()->updateOrCreate([
+        //         'id_produk' => $produk['id_produk'],
+        //         'id_kategori' => $produk['id_kategori'],
+        //         'kode_produk' => $produk['kode_produk'],
+        //         'nama_produk' => $produk['nama_produk'],
+        //         'satuan' => $produk['satuan'],
+        //         'harga_beli' => $produk['harga_beli'],
+        //         'diskon' => $produk['diskon'],
+        //         'harga_jual' => $produk['harga_jual'],
+        //         'stok' => $produk['stok'],
+        //         'stok_lama' => $produk['stok_lama'],
+        //         'tanggal_expire' => now()->addDays(14),
+        //         'created_at' => $produk['created_at'],
+        //         'updated_at' => $produk['update_at']
+        //     ]);
+        // }
 ////////////////////////////////////////////////////////////////////////////////////
         Supplier::create([
             'id_supplier' => 1,

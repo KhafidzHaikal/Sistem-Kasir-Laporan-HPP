@@ -25,6 +25,8 @@
                         class="btn btn-success btn-xs btn-flat"><i class="fa fa-file-excel-o"></i> Export PDF</a>
                     <button type="button" class="btn btn-primary btn-xs btn-flat" data-toggle="modal"
                         data-target=".bd-example-modal-lg"><i class="fa fa-file-excel-o"></i> Laba-Rugi</button>
+
+                    {{-- Modal Laba Rugi --}}
                     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -38,7 +40,10 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Tanggal Awal</label>
                                             <div class="col-sm-5">
-                                                <input type="date" class="form-control" id="awal" required>
+                                                <input type="text" name="awal" id="awal"
+                                                    class="form-control datepicker" required autofocus
+                                                    value="{{ request('awal') }}" style="border-radius: 0 !important;">
+                                                <span class="help-block with-errors"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -46,21 +51,26 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Tanggal Akhir</label>
                                             <div class="col-sm-5">
-                                                <input type="date" class="form-control" id="akhir" required
-                                                    value="{{ request('awal') ?? date('Y-m-d') }}">
+                                                <input type="text" name="akhir" id="akhir"
+                                                    class="form-control datepicker" required
+                                                    value="{{ request('akhir') ?? date('Y-m-d') }}"
+                                                    style="border-radius: 0 !important;">
+                                                <span class="help-block with-errors"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a target="_blank" {{-- onclick="this.href='/laporan/laba-rugi/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value" --}}
-                                        onclick="openLaporanLabaRugi(document.getElementById('awal').value, document.getElementById('akhir').value)"
+                                    <a target="_blank" onclick="this.href='/laporan/laba-rugi/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
+                                        {{-- onclick="openLaporanLabaRugi(document.getElementById('awal').value, document.getElementById('akhir').value)" --}}
                                         class="btn btn-primary">Cetak</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {{-- End Modal Laba Rugi --}}
+
                     <button type="button" class="btn btn-warning btn-xs btn-flat" data-toggle="modal"
                         data-target="#myModal"><i class="fa fa-file-excel-o"></i> HPP</button>
                     <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModal">
@@ -93,7 +103,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <a target="_blank"
-                                    onclick="openLaporanHPP(document.getElementById('tanggal_awal').value, document.getElementById('tanggal_akhir').value)"
+                                        onclick="openLaporanHPP(document.getElementById('tanggal_awal').value, document.getElementById('tanggal_akhir').value)"
                                         class="btn btn-primary">Cetak</a>
                                 </div>
                             </div>

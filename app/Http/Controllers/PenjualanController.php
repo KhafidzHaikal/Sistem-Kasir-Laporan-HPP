@@ -145,7 +145,7 @@ class PenjualanController extends Controller
 
     public function pdf($awal, $akhir)
     {
-
+        $akhir = Carbon::parse($akhir)->endOfDay();
         $penjualan = PenjualanDetail::join('penjualan', 'penjualan_detail.id_penjualan', '=', 'penjualan.id_penjualan')
             ->select('penjualan_detail.*', 'penjualan.*')
             ->whereBetween('penjualan_detail.created_at', [$awal, $akhir])

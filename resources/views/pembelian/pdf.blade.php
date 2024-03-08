@@ -71,12 +71,12 @@
         <thead>
             <tr>
                 <th width="5%">No</th>
-                <th width="15%">Tanggal</th>
-                <th width="10%">Nama Supplier</th>
+                <th width="10%">Tanggal</th>
                 <th>Nama Barang</th>
                 <th width="5%">Jumlah</th>
                 <th>Harga Satuan</th>
                 <th>Total</th>
+                <th width="10%">Nama Supplier</th>
             </tr>
         </thead>
         <tbody>
@@ -84,16 +84,17 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ tanggal_indonesia($row->created_at, false) }}</td>
-                    <td>{{ $row->supplier->nama }}</td>
-                    <td>{{ $row->produk->nama_produk }}</td>
+                    <td style="text-align: left">{{ $row->produk->nama_produk }}</td>
                     <td>{{ $row->jumlah }}</td>
                     <td style="text-align: right">{{ format_uang($row->produk->harga_beli) }}</td>
                     <td style="text-align: right">{{ format_uang($row->subtotal) }}</td>
+                    <td>{{ $row->supplier->nama }}</td>
                 </tr>
             @endforeach
             <tr>
-                <td colspan="6"><strong>Total Pembelian</strong></td>
+                <td colspan="5"><strong>Total Pembelian</strong></td>
                 <td style="text-align: right"><strong>{{ format_uang($jumlah) }}</strong></td>
+                <td></td>
             </tr>
         </tbody>
     </table>

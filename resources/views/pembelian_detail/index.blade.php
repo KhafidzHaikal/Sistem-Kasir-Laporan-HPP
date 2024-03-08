@@ -103,7 +103,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-2 control-label">Tanggal Pembelian</label>
                                 <div class="col-lg-8">
-                                    <input type="date" class="form-control" id="created_at" name="created_at">
+                                    <input type="date" class="form-control" id="created_at" name="created_at" required>
                                 </div>
                             </div>
                             <div class="form-group row">

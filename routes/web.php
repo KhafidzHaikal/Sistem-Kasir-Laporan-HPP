@@ -59,6 +59,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/pengeluaran', PengeluaranController::class);
 
         Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+
+        Route::get('/pembelian/selesai', [PembelianController::class, 'selesai'])->name('pembelian.selesai');
+        Route::get('/pembelian/kwitansi', [PembelianController::class, 'kwitansi'])->name('pembelian.kwitansi');
+
         Route::get('/pembelian/pdf/{awal}/{akhir}', [PembelianController::class, 'pdf'])->name('pembelian.pdf');
         Route::get('/pembelian/{id}/create', [PembelianController::class, 'create'])->name('pembelian.create');
         Route::resource('/pembelian', PembelianController::class)

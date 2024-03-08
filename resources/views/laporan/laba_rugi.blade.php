@@ -65,37 +65,40 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th width="5%" rowspan="2">No</th>
+                <th width="4%" rowspan="2">No</th>
                 <th rowspan="2">Tanggal</th>
                 <th rowspan="2">Nama Barang</th>
-                <th colspan="3">Pembelian</th>
-                <th rowspan="2">Harga Jual</th>
+                <th width="5%" rowspan="2">Jumlah</th>
+                <th colspan="2">Pembelian</th>
+                <th colspan="2">Penjualan</th>
                 <th rowspan="2">Laba-Rugi (Harga Jual - Harga Beli)</th>
             </tr>
             <tr>
-                <th width="5%">Jumlah</th>
-                <th>Harga Satuan</th>
+                <th width="10%">Harga Beli</th>
+                <th>Total</th>
+                <th width="10%">Harga Jual</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($pembelian as $row)
+            @foreach ($results as $row)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ tanggal_indonesia($row->created_at, false) }}</td>
-                    <td>{{ $row->produk->merk }}</td>
-                    <td>{{ $row->produk->stok }}</td>
-                    <td style="text-align: right">{{ format_uang($row->produk->harga_beli) }}</td>
-                    <td style="text-align: right">{{ format_uang($row->produk->total_harga_beli) }}</td>
-                    <td style="text-align: right">{{ format_uang($row->produk->harga_jual * $row->produk->stok) }}</td>
+                    <td width="10%">{{ tanggal_indonesia($row->created_at, false) }}</td>
+                    <td style="text-align: left">{{ $row->nama_produk }}</td>
+                    <td>{{ $row->stok_belanja }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_beli) }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_jual) }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_beli * $row->stok_belanja) }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_jual * $row->stok_belanja) }}</td>
                     <td style="text-align: right">
-                        {{ format_uang($row->produk->harga_jual * $row->produk->stok - $row->produk->total_harga_beli) }}
+                        {{ format_uang(($row->harga_jual * $row->stok_belanja) - ($row->harga_beli * $row->stok_belanja)) }}
                     </td>
                 </tr>
             @endforeach
             <tr>
-                <td colspan="7"><strong>TOTAL LABA-RUGI</strong></td>
-                <td style="text-align: right">{{ format_uang($total_laba_rugi) }}</td>
+                <td colspan="8"><strong>TOTAL LABA-RUGI</strong></td>
+                <td style="text-align: right" width="20%">{{ format_uang($total_laba_rugi) }}</td>
             </tr>
         </tbody>
     </table>

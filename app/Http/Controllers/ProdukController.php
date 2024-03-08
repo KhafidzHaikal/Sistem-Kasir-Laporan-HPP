@@ -187,6 +187,7 @@ class ProdukController extends Controller
 
     public function pdf($awal, $akhir)
     {
+        $akhir = Carbon::parse($akhir)->endOfDay();
         $produk = Produk::leftJoin('pembelian_detail', 'pembelian_detail.id_produk', '=', 'produk.id_produk')
             ->leftJoin('penjualan_detail', 'penjualan_detail.id_produk', '=', 'produk.id_produk')
             ->leftJoin('penjualan', 'penjualan_detail.id_penjualan', '=', 'penjualan.id_penjualan')

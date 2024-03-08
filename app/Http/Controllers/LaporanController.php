@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Produk;
+use Carbon\Carbon;
 
-use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+use App\Models\Produk;
 use App\Models\Pembelian;
 use App\Models\Penjualan;
 use App\Models\Pengeluaran;
@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as Barpdf;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class LaporanController extends Controller
 {
@@ -127,23 +128,37 @@ class LaporanController extends Controller
 
     public function labaPdf($awal, $akhir)
     {
-        $produk = Produk::join('pembelian_detail', 'produk.id_produk', '=', 'pembelian_detail.id_produk')->select('produk.*', 'pembelian_detail.*')->get();
-        $pembelian = PembelianDetail::join('produk', 'pembelian_detail.id_produk', '=', 'produk.id_produk')->select('produk.*', 'pembelian_detail.*')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->get();
+        $akhir = Carbon::parse($akhir)->endOfDay();
+        $results = DB::table('backup_produks')
+            ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
+            ->whereBetween('backup_produks.created_at', [$awal, $akhir])
+            ->select(
+                'backup_produks.id_produk',
+                'backup_produks.nama_produk',
+                'backup_produks.satuan',
+                'backup_produks.harga_beli',
+                'backup_produks.stok_belanja',
+                'backup_produks.created_at',
+                'produk.harga_jual',
+            )
+            ->groupBy('backup_produks.id_produk')
+            ->get();
+        // dd($results);
 
         $total_laba_rugi = 0;
 
-        foreach ($produk as $row) {
-            $total_laba_rugi += ($row->harga_jual * $row->stok) - $row->total_harga_beli;
+        foreach ($results as $row) {
+            $total_laba_rugi += ($row->harga_jual * $row->stok_belanja) - ($row->harga_beli * $row->stok_belanja);
         }
 
-        $jumlah = $produk->sum('total_harga_beli');
-
-        $pdf = PDF::loadView('laporan.laba_rugi', compact('awal', 'akhir', 'pembelian', 'jumlah', 'total_laba_rugi'))->setPaper('a4');
+        // dd($total_laba_rugi);
+        $pdf = PDF::loadView('laporan.laba_rugi', compact('awal', 'akhir', 'results', 'total_laba_rugi'))->setPaper('a4');
         return $pdf->inline('Laporan-laba_Rugi-' . date('Y-m-d-his') . '.pdf');
     }
 
     public function hpp($tanggal_awal, $tanggal_akhir)
     {
+        $tanggal_akhir = Carbon::parse($tanggal_akhir)->endOfDay();
         $results = DB::table('backup_produks')
             ->join('produk', 'backup_produks.id_produk', '=', 'produk.id_produk')
             ->whereBetween('backup_produks.created_at', [$tanggal_awal, $tanggal_akhir])

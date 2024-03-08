@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Pembelian;
-use App\Models\PembelianDetail;
+use Carbon\Carbon;
 use App\Models\Produk;
 use App\Models\Supplier;
+use App\Models\Pembelian;
+use Illuminate\Http\Request;
+use App\Models\PembelianDetail;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class PembelianController extends Controller
@@ -90,7 +91,8 @@ class PembelianController extends Controller
             $produk->update();
         }
 
-        return redirect()->route('pembelian.index')->with('success', 'Pembelian Berhasil');
+        return redirect()->route('pembelian.selesai');
+        // return redirect('pembelian.selesai')->with('success', 'Pembelian Berhasil');
     }
 
     public function show($id)
@@ -136,12 +138,37 @@ class PembelianController extends Controller
         return response(null, 204);
     }
 
+    public function selesai()
+    {
+        return view('pembelian.selesai');
+    }
+
+    public function kwitansi()
+    {
+        $pembelian = Pembelian::find(session('id_pembelian'));
+        if (!$pembelian) {
+            abort(404);
+        }
+        $detail = PembelianDetail::with('produk')
+            ->where('id_pembelian', session('id_pembelian'))
+            ->get();
+
+        $pdf = PDF::loadView('pembelian.kwitansi', compact('pembelian', 'detail'));
+        return $pdf->inline('Transaksi-' . date('Y-m-d-his') . '.pdf');
+    }
+
     public function pdf($awal, $akhir)
     {
+        $akhir = Carbon::parse($akhir)->endOfDay();
         $pembelian = PembelianDetail::join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')->select('pembelian_detail.*', 'pembelian.id_supplier')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->orderBy('pembelian_detail.created_at', 'asc')->get();
-        $jumlah = PembelianDetail::sum('subtotal');
-        $pdf  = PDF::loadView('pembelian.pdf', compact('awal', 'akhir', 'pembelian', 'jumlah'));
 
+        $jumlah = 0;
+        foreach ($pembelian as $item) 
+        {
+            $jumlah += $item->subtotal;
+        }
+
+        $pdf  = PDF::loadView('pembelian.pdf', compact('awal', 'akhir', 'pembelian', 'jumlah'));
         return $pdf->inline('Laporan-Pembelian-' . date('Y-m-d-his') . '.pdf');
     }
 }
