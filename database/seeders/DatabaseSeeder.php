@@ -22,8 +22,76 @@ class DatabaseSeeder extends Seeder
             'id_kategori' => 1,
             'nama_kategori' => "Minuman",
         ]);
+        Kategori::create([
+            'id_kategori' => 2,
+            'nama_kategori' => "Makanan",
+        ]);
 
-/////////////////////////////////////////////////////////////////////////
+        Produk::create([
+            'id_produk' => 1,
+            'id_kategori' => 1,
+            'kode_produk' => 'P00001',
+            'nama_produk' => 'Fanta 1500 ml',
+            'satuan' => 'pcs',
+            'harga_beli' => 12000,
+            'diskon' => 0,
+            'harga_jual' => 15000,
+            'stok' => 40,
+            'stok_lama' => 40,
+            'tanggal_expire' => now()->addDays(14),
+            'created_at' => date(now()),
+            'updated_at' => date(now())
+        ]);
+
+        Produk::create([
+            'id_produk' => 2,
+            'id_kategori' => 1,
+            'kode_produk' => 'P00002',
+            'nama_produk' => 'Sprite 1500 ml',
+            'satuan' => 'pcs',
+            'harga_beli' => 13000,
+            'diskon' => 0,
+            'harga_jual' => 14000,
+            'stok' => 35,
+            'stok_lama' => 35,
+            'tanggal_expire' => now()->addDays(14),
+            'created_at' => date(now()),
+            'updated_at' => date(now())
+        ]);
+
+        Produk::create([
+            'id_produk' => 3,
+            'id_kategori' => 2,
+            'kode_produk' => 'P00003',
+            'nama_produk' => 'Lays 600 gr',
+            'satuan' => 'pcs',
+            'harga_beli' => 4000,
+            'diskon' => 0,
+            'harga_jual' => 6000,
+            'stok' => 30,
+            'stok_lama' => 30,
+            'tanggal_expire' => now()->addDays(14),
+            'created_at' => date(now()),
+            'updated_at' => date(now())
+        ]);
+
+        Produk::create([
+            'id_produk' => 4,
+            'id_kategori' => 2,
+            'kode_produk' => 'P00004',
+            'nama_produk' => 'Chitato 600 gr',
+            'satuan' => 'pcs',
+            'harga_beli' => 3500,
+            'diskon' => 0,
+            'harga_jual' => 5000,
+            'stok' => 37,
+            'stok_lama' => 37,
+            'tanggal_expire' => now()->addDays(14),
+            'created_at' => date(now()),
+            'updated_at' => date(now())
+        ]);
+
+        /////////////////////////////////////////////////////////////////////////
         // $json = Storage::disk('local')->get('/json/produk.json');
         // $produks = json_decode($json, true);
 
@@ -44,7 +112,7 @@ class DatabaseSeeder extends Seeder
         //         'updated_at' => $produk['update_at']
         //     ]);
         // }
-////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////
         Supplier::create([
             'id_supplier' => 1,
             'nama' => 'Indomaret',

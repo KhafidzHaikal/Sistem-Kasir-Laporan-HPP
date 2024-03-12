@@ -160,11 +160,17 @@ class PembelianController extends Controller
     public function pdf($awal, $akhir)
     {
         $akhir = Carbon::parse($akhir)->endOfDay();
-        $pembelian = PembelianDetail::join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')->select('pembelian_detail.*', 'pembelian.id_supplier')->whereBetween('pembelian_detail.created_at', [$awal, $akhir])->orderBy('pembelian_detail.created_at', 'asc')->get();
+        $pembelian = PembelianDetail::
+            leftJoin('produk', 'pembelian_detail.id_produk', '=', 'produk.id_produk')
+            ->join('pembelian', 'pembelian_detail.id_pembelian', '=', 'pembelian.id_pembelian')
+            ->select('pembelian_detail.*', 'pembelian.id_supplier', 'produk.nama_produk', 'produk.harga_beli')
+            ->whereBetween('pembelian_detail.created_at', [$awal, $akhir])
+            ->orderBy('pembelian_detail.created_at', 'asc')
+            ->get();
 
+        // dd($pembelian);
         $jumlah = 0;
-        foreach ($pembelian as $item) 
-        {
+        foreach ($pembelian as $item) {
             $jumlah += $item->subtotal;
         }
 

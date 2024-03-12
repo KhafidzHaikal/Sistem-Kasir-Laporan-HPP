@@ -12,6 +12,7 @@
 
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="{{ asset('/AdminLTE-2/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    {{-- <link href="/css/style.css" rel="stylesheet"> --}}
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('/AdminLTE-2/bower_components/font-awesome/css/font-awesome.min.css') }}">
     <!-- Theme style -->

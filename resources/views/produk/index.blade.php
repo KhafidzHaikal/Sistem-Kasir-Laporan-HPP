@@ -14,63 +14,61 @@
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <div class="btn-group">
-                        <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-success btn-xs btn-flat"><i
-                                class="fa fa-plus-circle"></i> Tambah</button>
-                        <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')"
-                            class="btn btn-danger btn-xs btn-flat"><i class="fa fa-trash"></i> Hapus</button>
-                        <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')"
-                            class="btn btn-info btn-xs btn-flat"><i class="fa fa-barcode"></i> Cetak Barcode</button>
-                        <button type="button" class="btn btn-primary btn-xs btn-flat" data-toggle="modal"
-                            data-target=".bd-example-modal-lg"><i class="fa fa-file-excel-o"></i> Laporan</button>
-                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Laporan Stok Produk</h5>
-                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                                        </button>
+                    <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-success btn-flat"><i
+                            class="fa fa-plus-circle"></i> Tambah</button>
+                    <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')"
+                        class="btn btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus</button>
+                    <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" class="btn btn-info btn-flat"><i
+                            class="fa fa-barcode"></i> Cetak Barcode</button>
+                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
+                        data-target=".bd-example-modal-lg"><i class="fa fa-file-excel-o"></i> Laporan</button>
+                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Laporan Stok Produk</h5>
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="modal-body">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Tanggal Awal</label>
+                                            <div class="col-sm-5">
+                                                <input type="date" class="form-control" id="awal" required>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="modal-body">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Tanggal Awal</label>
-                                                <div class="col-sm-5">
-                                                    <input type="date" class="form-control" id="awal" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Tanggal Akhir</label>
-                                                <div class="col-sm-5">
-                                                    <input type="date" class="form-control" id="akhir" required
-                                                        value="{{ request('awal') ?? date('Y-m-d') }}">
-                                                </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Tanggal Akhir</label>
+                                            <div class="col-sm-5">
+                                                <input type="date" class="form-control" id="akhir" required
+                                                    value="{{ request('awal') ?? date('Y-m-d') }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <a target="_blank"
-                                            onclick="openProduk(document.getElementById('awal').value, document.getElementById('akhir').value)"
-                                            class="btn btn-primary">Cetak</a>
-                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a target="_blank"
+                                        onclick="openProduk(document.getElementById('awal').value, document.getElementById('akhir').value)"
+                                        class="btn btn-primary">Cetak</a>
                                 </div>
                             </div>
                         </div>
-                        <form action={{ route('produk.backup_data') }} method="POST">
-                            @csrf
-                            <button type="submit" style="position:absolute" class="btn btn-warning btn-xs btn-flat"><i
-                                    class="fa fa-plus-circle"></i> Backup Produk</button>
-                            {{-- <button type="submit" style="position:absolute"
-                                class="btn btn-warning btn-xs btn-flat {{ $buttonClass }}"{{ $buttonAttributes }}
-                                onclick="return confirm('Anda yakin Backup Data?')>
-                                <i class="fa
-                                fa-plus-circle"></i> Backup Produk
-                            </button> --}}
-                        </form>
                     </div>
+                    <button onclick="addBackup('{{ route('produk.backup_data') }}')" class="btn btn-warning btn-flat"><i
+                            class="fa fa-plus-circle"></i> Backup Produk</button>
+                    {{-- <form action={{ route('produk.backup_data') }} method="POST">
+                        @csrf
+                        <button type="submit" style="position:absolute"
+                        class="btn btn-warning btn-xs btn-flat {{ $buttonClass }}"{{ $buttonAttributes }}
+                        onclick="return confirm('Anda yakin Backup Data?')>
+                        <i class="fa
+                        fa-plus-circle"></i> Backup Produk
+                    </button>
+                    </form> --}}
                 </div>
                 <div class="box-body table-responsive">
                     <form action="" method="post" class="form-produk">
@@ -185,6 +183,28 @@
             $('#modal-form form').attr('action', url);
             $('#modal-form [name=_method]').val('post');
             $('#modal-form [name=nama_produk]').focus();
+        }
+
+        function addBackup(url) {
+            // Create a new form element
+            var form = document.createElement('form');
+            form.setAttribute('method', 'POST');
+            form.setAttribute('action', url);
+
+            // Create a new CSRF token input field
+            var csrfInput = document.createElement('input');
+            csrfInput.setAttribute('type', 'hidden');
+            csrfInput.setAttribute('name', '_token');
+            csrfInput.setAttribute('value', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+            // Append the CSRF token input field to the form
+            form.appendChild(csrfInput);
+
+            // Append the form to the body (or another container element)
+            document.body.appendChild(form);
+
+            // Submit the form
+            form.submit();
         }
 
         function editForm(url) {

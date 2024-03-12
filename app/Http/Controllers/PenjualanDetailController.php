@@ -51,7 +51,7 @@ class PenjualanDetailController extends Controller
             $row['diskon']      = $item->diskon . '%';
             $row['subtotal']    = 'Rp. ' . format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
-            <button onclick="deleteData(`' . route('transaksi.destroy', $item->id_penjualan_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+            <button onclick="deleteData(`' . route('transaksi.destroy', $item->id_penjualan_detail) . '`)" class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button>
             </div>';
             $data[] = $row;
 

@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Models\PenjualanDetail;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class PenjualanController extends Controller
@@ -49,8 +50,8 @@ class PenjualanController extends Controller
             ->addColumn('aksi', function ($penjualan) {
                 return '
                 <div class="btn-group">
-                    <button onclick="showDetail(`' . route('penjualan.show', $penjualan->id_penjualan) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
-                    <button onclick="deleteData(`' . route('penjualan.destroy', $penjualan->id_penjualan) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button onclick="showDetail(`' . route('penjualan.show', $penjualan->id_penjualan) . '`)" class="btn btn-info btn-flat"><i class="fa fa-eye"></i></button>
+                    <button onclick="deleteData(`' . route('penjualan.destroy', $penjualan->id_penjualan) . '`)" class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
@@ -153,11 +154,10 @@ class PenjualanController extends Controller
         // dd($penjualan);
 
         $total = 0;
-        foreach ($penjualan as $item) 
-        {
+        foreach ($penjualan as $item) {
             $total += $item->subtotal;
         }
-        
+
         $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'penjualan', 'total'));
         return $pdf->inline('Laporan-Penjualan-' . date('Y-m-d-his') . '.pdf');
     }

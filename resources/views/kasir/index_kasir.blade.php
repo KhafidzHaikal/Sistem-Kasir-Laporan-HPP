@@ -14,13 +14,13 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
-                    data-target=".bd-example-modal-lg"><i class="fa fa-file-excel-o"></i> Laporan</button>
+                <button type="button" class="btn btn-primary btn-xs btn-flat" data-toggle="modal"
+                    data-target=".bd-example-modal-lg"><i class="fa fa-file-excel-o"></i> Laporan Kasir</button>
                 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Laporan Penjualan</h5>
+                                <h5 class="modal-title">Laporan Kasir</h5>
                                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                                 </button>
                             </div>
@@ -46,7 +46,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <a target="_blank"
-                                    onclick="this.href='/penjualan/pdf/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
+                                    onclick="this.href='/kasir/pdf/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
                                     class="btn btn-primary">Cetak</a>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
     </div>
 </div>
 
-@includeIf('penjualan.detail')
+@includeIf('kasir.detail')
 @endsection
 
 @push('scripts')
@@ -84,7 +84,7 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('penjualan.data') }}',
+                url: '{{ route('kasir.data') }}',
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -121,20 +121,5 @@
         table1.ajax.reload();
     }
 
-    function deleteData(url) {
-        if (confirm('Yakin ingin menghapus data terpilih?')) {
-            $.post(url, {
-                    '_token': $('[name=csrf-token]').attr('content'),
-                    '_method': 'delete'
-                })
-                .done((response) => {
-                    table.ajax.reload();
-                })
-                .fail((errors) => {
-                    alert('Tidak dapat menghapus data');
-                    return;
-                });
-        }
-    }
 </script>
 @endpush

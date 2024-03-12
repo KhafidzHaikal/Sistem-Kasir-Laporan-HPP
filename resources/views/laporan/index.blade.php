@@ -19,11 +19,11 @@
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <button onclick="updatePeriode()" class="btn btn-info btn-xs btn-flat"><i class="fa fa-plus-circle"></i>
+                    <button onclick="updatePeriode()" class="btn btn-info btn-flat"><i class="fa fa-plus-circle"></i>
                         Ubah Periode</button>
                     <a href="{{ route('laporan.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank"
-                        class="btn btn-success btn-xs btn-flat"><i class="fa fa-file-excel-o"></i> Export PDF</a>
-                    <button type="button" class="btn btn-primary btn-xs btn-flat" data-toggle="modal"
+                        class="btn btn-success btn-flat"><i class="fa fa-file-excel-o"></i> Export PDF</a>
+                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                         data-target=".bd-example-modal-lg"><i class="fa fa-file-excel-o"></i> Laba-Rugi</button>
 
                     {{-- Modal Laba Rugi --}}
@@ -62,16 +62,16 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a target="_blank" onclick="this.href='/laporan/laba-rugi/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
-                                        {{-- onclick="openLaporanLabaRugi(document.getElementById('awal').value, document.getElementById('akhir').value)" --}}
-                                        class="btn btn-primary">Cetak</a>
+                                    <a target="_blank"
+                                        onclick="this.href='/laporan/laba-rugi/'+document.getElementById('awal').value+ '/' +document.getElementById('akhir').value"
+                                        {{-- onclick="openLaporanLabaRugi(document.getElementById('awal').value, document.getElementById('akhir').value)" --}} class="btn btn-primary">Cetak</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {{-- End Modal Laba Rugi --}}
 
-                    <button type="button" class="btn btn-warning btn-xs btn-flat" data-toggle="modal"
+                    <button type="button" class="btn btn-warning btn-flat" data-toggle="modal"
                         data-target="#myModal"><i class="fa fa-file-excel-o"></i> HPP</button>
                     <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModal">
                         <div class="modal-dialog modal-lg">
@@ -103,8 +103,12 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <a target="_blank"
-                                        onclick="openLaporanHPP(document.getElementById('tanggal_awal').value, document.getElementById('tanggal_akhir').value)"
+                                        onclick="this.href='/laporan/hpp/'+document.getElementById('tanggal_awal').value+ '/' +document.getElementById('tanggal_akhir').value"
                                         class="btn btn-primary">Cetak</a>
+
+                                    {{-- <a target="_blank"
+                                        onclick="openLaporanHPP(document.getElementById('tanggal_awal').value, document.getElementById('tanggal_akhir').value)"
+                                        class="btn btn-primary">Cetak</a> --}}
                                 </div>
                             </div>
                         </div>
@@ -178,12 +182,12 @@
             $('#modal-form').modal('show');
         }
 
-        function openLaporanLabaRugi(awal, akhir) {
-            window.open('/laporan/laba-rugi/' + awal + '/' + akhir, 'Laporan Laba Rugi', 'width=900,height=675');
-        }
+        // function openLaporanLabaRugi(awal, akhir) {
+        //     window.open('/laporan/laba-rugi/' + awal + '/' + akhir, 'Laporan Laba Rugi', 'width=900,height=675');
+        // }
 
-        function openLaporanHPP(tanggal_awal, tanggal_akhir) {
-            window.open('/laporan/hpp/' + tanggal_awal + '/' + tanggal_akhir, 'Laporan HPP', 'width=900,height=675');
-        }
+        // function openLaporanHPP(tanggal_awal, tanggal_akhir) {
+        //     window.open('/laporan/hpp/' + tanggal_awal + '/' + tanggal_akhir, 'Laporan HPP', 'width=900,height=675');
+        // }
     </script>
 @endpush

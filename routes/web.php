@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     BackupProdukController,
     DashboardController,
+    KasirController,
     KategoriController,
     LaporanController,
     ProdukController,
@@ -86,6 +87,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/transaksi/selesai', [PenjualanController::class, 'selesai'])->name('transaksi.selesai');
         Route::get('/transaksi/nota-kecil', [PenjualanController::class, 'notaKecil'])->name('transaksi.nota_kecil');
         Route::get('/transaksi/nota-besar', [PenjualanController::class, 'notaBesar'])->name('transaksi.nota_besar');
+
+        Route::get('/laporan-kasir', [KasirController::class, 'index'])->name('laporan.kasir');
+        Route::get('/kasir/data', [KasirController::class, 'data'])->name('kasir.data');
+        Route::get('/kasir/{id}', [KasirController::class, 'show'])->name('kasir.show');
+        Route::get('/kasir/pdf/{awal}/{akhir}', [KasirController::class, 'laporan'])->name('kasir.pdf');
 
         Route::get('/produk/stok/{id_produk}', [PenjualanDetailController::class, 'stok'])->name('produk.stok');
 

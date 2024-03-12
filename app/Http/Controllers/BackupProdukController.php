@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BackupProduk;
-use Illuminate\Http\Request;
-use App\Models\backup_produk;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Storebackup_produkRequest;
-use App\Http\Requests\Updatebackup_produkRequest;
 
 class BackupProdukController extends Controller
 {

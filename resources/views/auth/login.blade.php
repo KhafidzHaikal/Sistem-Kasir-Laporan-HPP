@@ -1,51 +1,85 @@
-@extends('layouts.auth')
+<!DOCTYPE html>
+<html lang="en" class="h-100">
 
-@section('login')
-<div class="login-box">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login </title>
+    <!-- Favicon icon -->
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 2rem; 
+        }
+        label {
+            display: flex;
+            justify-content: center;
+        }
 
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <div class="login-logo">
-            
-        </div>
+        input {
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            img{
+                display: none;
+            }
+            h3{
+                text-align: center;
+                margin-left: 50px;
+            }
+            h4{
+                text-align: center;
+                margin-left: 50px;
+            }
+        }
+    </style>
+</head>
 
-        <form action="{{ route('login') }}" method="post" class="form-login">
-            @csrf
-            <div class="form-group has-feedback @error('email') has-error @enderror">
-                <input type="email" name="email" class="form-control" placeholder="Email" required value="{{ old('email') }}" autofocus>
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                @error('email')
-                    <span class="help-block">{{ $message }}</span>
-                @else
-                <span class="help-block with-errors"></span>
-                @enderror
-            </div>
-            <div class="form-group has-feedback @error('password') has-error @enderror">
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                @error('password')
-                    <span class="help-block">{{ $message }}</span>
-                @else
-                    <span class="help-block with-errors"></span>
-                @enderror
-            </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox"> Remember Me
-                        </label>
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <form action={{ route('login') }} method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label><strong>Email</strong></label>
+                                            <input type="text" class="form-control" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Password</strong></label>
+                                            <input type="password" class="form-control" name="password">
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                </div>
-                <!-- /.col -->
             </div>
-        </form>
+        </div>
     </div>
-    <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-@endsection
+
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/js/quixnav-init.js"></script>
+    <script src="/js/custom.min.js"></script>
+
+</body>
+
+</html>

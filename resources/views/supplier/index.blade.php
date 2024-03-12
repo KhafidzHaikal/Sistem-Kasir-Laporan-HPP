@@ -14,9 +14,9 @@
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat"><i
+                    <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success"><i
                             class="fa fa-plus-circle"></i> Tambah</button>
-                    <a target="_blank" href="/supplier/pdf" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-file-excel-o"></i> Laporan</a>
+                    <a target="_blank" href="/supplier/pdf" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Laporan</a>
                 </div>
                 <div class="box-body table-responsive">
                     <table class="table table-stiped table-bordered">

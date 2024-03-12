@@ -39,7 +39,7 @@ class ProdukController extends Controller
 
         // $buttonAttributes = $buttonClass ? " disabled" : "";
 
-        return view('produk.index', compact('kategori' , 'buttonAttributes', 'buttonClass'));
+        return view('produk.index', compact('kategori', 'buttonAttributes', 'buttonClass'));
     }
 
     public function data()
@@ -60,6 +60,17 @@ class ProdukController extends Controller
             ->addColumn('kode_produk', function ($produk) {
                 return '<span class="label label-success">' . $produk->kode_produk . '</span>';
             })
+            ->addColumn('tanggal_expire', function ($produk) {
+                $expired_products = Produk::where('tanggal_expire', '<=', Carbon::now()->addDays(7))
+                    ->whereNotNull('tanggal_expire')
+                    ->get();
+
+                if (in_array($produk->tanggal_expire, $expired_products->pluck('tanggal_expire')->toArray())) {
+                    return '<span class="label label-danger">' . $produk->tanggal_expire . '</span>';
+                } else {
+                    return '<span class="label label-success">' . $produk->tanggal_expire . '</span>';;
+                };
+            })
             ->addColumn('harga_beli', function ($produk) {
                 return format_uang($produk->harga_beli);
             })
@@ -72,12 +83,12 @@ class ProdukController extends Controller
             ->addColumn('aksi', function ($produk) {
                 return '
                 <div class="btn-group">
-                    <button type="button" onclick="editForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`' . route('produk.destroy', $produk->id_produk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button type="button" onclick="editForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`' . route('produk.destroy', $produk->id_produk) . '`)" class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'kode_produk', 'select_all'])
+            ->rawColumns(['aksi', 'kode_produk', 'tanggal_expire', 'select_all'])
             ->make(true);
     }
 
@@ -192,7 +203,7 @@ class ProdukController extends Controller
             ->leftJoin('penjualan_detail', 'penjualan_detail.id_produk', '=', 'produk.id_produk')
             ->leftJoin('penjualan', 'penjualan_detail.id_penjualan', '=', 'penjualan.id_penjualan')
             ->leftJoin('users', 'penjualan.id_user', '=', 'users.id')
-            ->select('produk.id_produk', 'produk.nama_produk', 'produk.created_at', 'produk.stok', 'produk.stok_lama', 'produk.harga_beli', 'pembelian_detail.id_pembelian_detail', 'pembelian_detail.jumlah', 'penjualan_detail.id_penjualan_detail', DB::raw('sum(penjualan_detail.jumlah) as stok_penjualan'), 'users.name')
+            ->select('produk.id_produk', 'produk.nama_produk', 'produk.created_at', 'produk.stok', 'produk.stok_lama', 'produk.harga_beli', 'pembelian_detail.id_pembelian_detail', 'pembelian_detail.jumlah', 'penjualan_detail.id_penjualan_detail', DB::raw('sum(produk.stok) as stok'), 'users.name')
             ->whereBetween('produk.created_at', [$awal, $akhir])
             ->groupBy('produk.id_produk')
             ->get();
@@ -201,7 +212,7 @@ class ProdukController extends Controller
         $total_penjualan = 0;
 
         foreach ($produk as $item) {
-            $total_penjualan += $item->harga_beli * $item->stok_penjualan;
+            $total_penjualan += $item->harga_beli * $item->stok;
         }
 
         $pdf = PDF::loadView('produk.pdf', compact('awal', 'akhir', 'produk', 'total_penjualan'))->setPaper('a4');

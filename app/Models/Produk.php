@@ -35,7 +35,7 @@ class Produk extends Model
 
     public function pembelian_detail()
     {
-        return $this->belongsToMany(PembelianDetail::class, 'pembelian_detail_produk', 'id_produk', 'id_pembelian_detail')
+        return $this->belongsToMany(PembelianDetail::class, 'pembelian_detail', 'id_produk', 'id_pembelian_detail')
                     ->withPivot('jumlah', 'subtotal')
                     ->withTimestamps();
     }

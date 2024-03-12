@@ -88,8 +88,8 @@
                     <td style="text-align: left">{{ $row->nama_produk }}</td>
                     <td>{{ $row->stok_belanja }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_beli) }}</td>
-                    <td style="text-align: right">{{ format_uang($row->harga_jual) }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_beli * $row->stok_belanja) }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_jual) }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_jual * $row->stok_belanja) }}</td>
                     <td style="text-align: right">
                         {{ format_uang(($row->harga_jual * $row->stok_belanja) - ($row->harga_beli * $row->stok_belanja)) }}

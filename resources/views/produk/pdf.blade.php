@@ -73,8 +73,7 @@
                 <th width="7%">Penjualan</th>
                 <th width="10%">Stok Sekarang</th>
                 <th width="9%">Harga Satuan</th>
-                <th>Total</th>
-                <th width="10%">Kasir</th>
+                <th width="10%">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -93,14 +92,12 @@
                     </td>
                     <td>{{ $row->stok }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_beli) }}</td>
-                    <td style="text-align: right">{{ format_uang($row->harga_beli * $row->stok_penjualan) }}</td>
-                    <td>{{ $row->name }}</td>
+                    <td style="text-align: right">{{ format_uang($row->harga_beli * $row->stok) }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="7"><strong>Total Stok</strong></td>
                 <td style="text-align: right"><strong>{{ format_uang($total_penjualan) }}</strong></td>
-                <td></td>
             </tr>
         </tbody>
     </table>

@@ -110,26 +110,31 @@
                     </tr>
                 @else
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td width="3%">{{ $loop->iteration }}</td>
                         <td style="text-align: left">{{ $result->nama_produk }}</td>
-                        <td width="5%">{{ $result->stok_awal }}</td>
-                        <td width="5%">{{ $result->satuan }}</td>
-                        <td style="text-align: right">{{ format_uang($result->harga_beli) }}</td>
-                        <td style="text-align: right">{{ format_uang($result->harga_beli * $result->stok_awal) }}</td>
-                        <td width="5%">{{ $result->stok_belanja }}</td>
-                        <td width="5%">{{ $result->satuan }}</td>
-                        <td style="text-align: right">{{ format_uang($result->harga_beli) }}</td>
-                        <td style="text-align: right">{{ format_uang($result->total_belanja) }}</td>
-                        <td width="5%">{{ $result->stok_akhir }}</td>
-                        <td width="5%">{{ $result->satuan }}</td>
-                        <td style="text-align: right">{{ format_uang($result->harga_beli) }}</td>
-                        <td style="text-align: right">{{ format_uang($result->harga_beli * $result->stok_akhir) }}</td>
-                        <td style="text-align: right">{{ format_uang($result->harga_beli * $result->stok_awal + $result->total_belanja - $result->harga_beli * $result->stok_akhir) }}</td>
+                        <td width="3%">{{ $result->stok_awal }}</td>
+                        <td width="3%">{{ $result->satuan }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli) }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli * $result->stok_awal) }}</td>
+                        <td width="3%">{{ $result->stok_belanja }}</td>
+                        <td width="3%">{{ $result->satuan }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli) }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->stok_belanja * $result->harga_beli) }}</td>
+                        <td width="3%">{{ $result->stok_akhir }}</td>
+                        <td width="3%">{{ $result->satuan }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli) }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli * $result->stok_akhir) }}</td>
+                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli * $result->stok_awal + $result->stok_belanja * $result->harga_beli - $result->harga_beli * $result->stok_akhir) }}</td>
                     </tr>
                 @endif
             @endforeach
             <tr>
-                <td colspan="14"><strong>TOTAL HARGA POKOK PRODUK</strong></td>
+                <td colspan="5"><strong>TOTAL STOK AWAL</strong></td>
+                <td style="text-align: right"><strong>{{ format_uang($totalAwal) }}</strong></td>
+                <td colspan="3"><strong>PEMBELIAN</strong></td>
+                <td style="text-align: right"><strong>{{ format_uang($totalBeli) }}</strong></td>
+                <td colspan="3"><strong>TOTAL STOK AKHIR</strong></td>
+                <td style="text-align: right"><strong>{{ format_uang($totalAkhir) }}</strong></td>
                 <td style="text-align: right"><strong>{{ format_uang($totalValue) }}</strong></td>
             </tr>
         </tbody>
