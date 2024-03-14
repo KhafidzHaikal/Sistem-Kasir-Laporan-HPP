@@ -105,7 +105,7 @@
             </li>
             <li>
                 <a href="{{ route('laporan.kasir') }}">
-                    <i class="fa fa-cart-arrow-down"></i> <span>Laporan Kasir</span>
+                    <i class="fa fa-file-pdf-o"></i> <span>Laporan Kasir</span>
                 </a>
             </li>
             @endif

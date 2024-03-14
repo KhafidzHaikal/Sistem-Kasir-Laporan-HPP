@@ -15,8 +15,8 @@ class BuatPenjualanDetailTable extends Migration
     {
         Schema::create('penjualan_detail', function (Blueprint $table) {
             $table->increments('id_penjualan_detail');
-            $table->integer('id_penjualan');
-            $table->integer('id_produk');
+            $table->foreignId('id_penjualan')->onDelete('cascade');
+            $table->foreignId('id_produk')->onDelete('cascade');
             $table->integer('harga_jual');
             $table->integer('jumlah');
             $table->tinyInteger('diskon')->default(0);

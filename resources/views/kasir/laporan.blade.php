@@ -67,11 +67,11 @@
         <thead>
             <tr>
                 <th width="5%">No</th>
-                <th width="15%">Tanggal</th>
+                <th width="10%">Tanggal</th>
                 <th width="10%">Nama Kasir</th>
                 <th>Nama Barang</th>
                 <th width="5%">Jumlah</th>
-                <th>Harga Satuan</th>
+                <th width="15%">Harga Satuan</th>
                 <th>Total</th>
             </tr>
         </thead>

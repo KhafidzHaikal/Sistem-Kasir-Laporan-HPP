@@ -86,13 +86,19 @@
                     <td>{{ $loop->iteration }}</td>
                     <td width="10%">{{ tanggal_indonesia($row->created_at, false) }}</td>
                     <td style="text-align: left">{{ $row->nama_produk }}</td>
-                    <td>{{ $row->stok_belanja }}</td>
+                    <td>
+                        @if ($row->stok_belanja == null)
+                            0
+                        @else
+                            {{ $row->stok_belanja }}
+                        @endif
+                    </td>
                     <td style="text-align: right">{{ format_uang($row->harga_beli) }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_beli * $row->stok_belanja) }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_jual) }}</td>
                     <td style="text-align: right">{{ format_uang($row->harga_jual * $row->stok_belanja) }}</td>
                     <td style="text-align: right">
-                        {{ format_uang(($row->harga_jual * $row->stok_belanja) - ($row->harga_beli * $row->stok_belanja)) }}
+                        {{ format_uang($row->harga_jual * $row->stok_belanja - $row->harga_beli * $row->stok_belanja) }}
                     </td>
                 </tr>
             @endforeach

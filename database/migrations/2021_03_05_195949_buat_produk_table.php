@@ -15,7 +15,7 @@ class BuatProdukTable extends Migration
     {
         Schema::create('produk', function (Blueprint $table) {
             $table->increments('id_produk');
-            $table->integer('id_kategori');
+            $table->foreignId('id_kategori')->onDelete('cascade');
             $table->string('nama_produk')->unique();
             $table->string('satuan')->nullable();
             $table->integer('harga_beli');
@@ -25,6 +25,7 @@ class BuatProdukTable extends Migration
             $table->integer('stok_lama')->nullable();
             $table->date('tanggal_expire')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

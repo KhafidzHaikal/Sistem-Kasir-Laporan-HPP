@@ -115,16 +115,27 @@
                         <td width="3%">{{ $result->stok_awal }}</td>
                         <td width="3%">{{ $result->satuan }}</td>
                         <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli) }}</td>
-                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli * $result->stok_awal) }}</td>
-                        <td width="3%">{{ $result->stok_belanja }}</td>
+                        <td style="text-align: right" width="7%">
+                            {{ format_uang($result->harga_beli * $result->stok_awal) }}</td>
+                        <td width="3%">
+                            @if ($result->stok_belanja == null)
+                                0
+                            @else
+                                {{ $result->stok_belanja }}
+                            @endif
+                        </td>
                         <td width="3%">{{ $result->satuan }}</td>
                         <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli) }}</td>
-                        <td style="text-align: right" width="7%">{{ format_uang($result->stok_belanja * $result->harga_beli) }}</td>
+                        <td style="text-align: right" width="7%">
+                            {{ format_uang($result->stok_belanja * $result->harga_beli) }}</td>
                         <td width="3%">{{ $result->stok_akhir }}</td>
                         <td width="3%">{{ $result->satuan }}</td>
                         <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli) }}</td>
-                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli * $result->stok_akhir) }}</td>
-                        <td style="text-align: right" width="7%">{{ format_uang($result->harga_beli * $result->stok_awal + $result->stok_belanja * $result->harga_beli - $result->harga_beli * $result->stok_akhir) }}</td>
+                        <td style="text-align: right" width="7%">
+                            {{ format_uang($result->harga_beli * $result->stok_akhir) }}</td>
+                        <td style="text-align: right" width="7%">
+                            {{ format_uang($result->harga_beli * $result->stok_awal + $result->stok_belanja * $result->harga_beli - $result->harga_beli * $result->stok_akhir) }}
+                        </td>
                     </tr>
                 @endif
             @endforeach

@@ -15,7 +15,7 @@ class BuatPembelianTable extends Migration
     {
         Schema::create('pembelian', function (Blueprint $table) {
             $table->increments('id_pembelian');
-            $table->integer('id_supplier');
+            $table->foreignId('id_supplier')->onDelete('cascade');
             $table->integer('total_item');
             $table->integer('total_harga');
             $table->tinyInteger('diskon')->default(0);

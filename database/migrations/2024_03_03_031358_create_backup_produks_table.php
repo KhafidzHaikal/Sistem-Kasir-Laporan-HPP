@@ -15,7 +15,7 @@ class CreateBackupProduksTable extends Migration
     {
         Schema::create('backup_produks', function (Blueprint $table) {
             $table->increments('id')->start_from(1);
-            $table->integer('id_produk');
+            $table->foreignId('id_produk')->onDelete('cascade');
             $table->string('nama_produk');
             $table->string('satuan');
             $table->integer('harga_beli');
